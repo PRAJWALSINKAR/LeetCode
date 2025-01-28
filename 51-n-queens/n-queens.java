@@ -1,10 +1,10 @@
 class Solution {
     public List<List<String>> solveNQueens(int n) {
-        char[][] board = new char[n][n];
+           char[][] board = new char[n][n];
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++)
                 board[i][j] = '.';
-        List<List<String>> res = new ArrayList<>();
+        List < List < String >> res = new ArrayList < List < String >> ();
         dfs(0, board, res);
         return res;
     }
@@ -35,28 +35,30 @@ class Solution {
         return true;
     }
 
-    static void dfs(int col, char[][] board, List<List<String>> res) {
+    static void dfs(int col, char[][] board, List < List < String >> res) {
         if (col == board.length) {
-            res.add(construct(board)); // Add the constructed board to the result list
+            res.add(construct(board));
             return;
         }
 
         for (int row = 0; row < board.length; row++) {
             if (validate(board, row, col)) {
-                board[row][col] = 'Q'; // Place a queen
-                dfs(col + 1, board, res); // Recurse for the next column
-                board[row][col] = '.'; // Backtrack by removing the queen
+                board[row][col] = 'Q';
+                dfs(col + 1, board, res);
+                board[row][col] = '.';
             }
         }
     }
 
-    static List<String> construct(char[][] board) {
-        // Use ArrayList instead of LinkedList here
-        List<String> res = new ArrayList<>();
+
+
+    static List < String > construct(char[][] board) {
+        List < String > res = new LinkedList < String > ();
         for (int i = 0; i < board.length; i++) {
-            String s = new String(board[i]); // Convert each row to a string
-            res.add(s); // Add the string representation of the row to the list
+            String s = new String(board[i]);
+            res.add(s);
         }
         return res;
     }
+    
 }
