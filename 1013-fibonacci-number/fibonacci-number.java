@@ -1,14 +1,14 @@
 class Solution {
     public int fib(int n) {
-        if(n < 2)return n;
-    int first =0 ;
-      int secound  = 1;
-      int current =0;
-     for(int i = 1 ; i<n ; i++){
-        current = first + secound;
-        first = secound;
-        secound = current;
-     }
-     return current;
+        int dp[]=new int[n+1];
+        Arrays.fill(dp,-1);
+        return help(n,dp);
+    }
+    public int help(int n  , int [] dp){
+     if(n==0||n==1)
+         return n;
+         if(dp[n]!=-1)return dp[n];
+         dp[n]=help(n-1,dp)+help(n-2,dp);
+         return dp[n];
     }
 }
