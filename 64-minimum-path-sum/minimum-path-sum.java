@@ -1,28 +1,29 @@
 class Solution {
     public int minPathSum(int[][] grid) {
-        int m  = grid.length;
+        int m = grid.length;
         int n = grid[0].length;
-
-        int [][] dp = new int[m][n];
-        for(int i=0 ; i< m ; i++){
-            Arrays.fill(dp[i] , -1);
+        int[][] dp = new int[m][n];
+        for(int i = 0 ; i< m ;i++ ){  // travel a row
+            for(int j = 0 ; j< n ;j++){ // tavel a col
+              if(i==0 && j ==0){
+                dp[i][j] = grid[i][j];
+                continue;
+              }
+              int right = 0;
+              int down = 0;
+              if(i == 0 && j < n ){
+             dp[i][j] = dp[i][j-1] + grid[i][j];
+             continue;
+              }
+              if(j==0 && i < m){
+                dp[i][j] = dp[i-1][j] + grid[i][j];
+                continue;
+              }
+              right = dp[i-1][j] + grid[i][j];
+              down = dp[i][j-1] + grid[i][j];
+              dp[i][j] = Math.min(right , down);
+            }
         }
-        return f(m-1 , n-1 , dp , grid);
-    }
-    public static int f(int row , int col , int [][] dp , int [][] arr){
-        if(row == 0 && col == 0 ){
-            return arr[0][0];
-        }
-        if(dp[row][col] != -1) return dp[row][col];
-        int up = Integer.MAX_VALUE;
-        int left = Integer.MAX_VALUE;
-
-        if(col > 0){
-            left = f(row , col-1 , dp , arr);
-        }
-         if(row > 0){
-            up = f(row-1 , col , dp , arr);
-        }
-        return dp[row][col] = arr[row][col] + Math.min(left , up) ;
-    }
+      return dp[m-1][n-1];
+     }
 }
