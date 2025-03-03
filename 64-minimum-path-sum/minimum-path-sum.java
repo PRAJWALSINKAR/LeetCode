@@ -2,28 +2,29 @@ class Solution {
     public int minPathSum(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
-        int[][] dp = new int[m][n];
-        for(int i = 0 ; i< m ;i++ ){  // travel a row
-            for(int j = 0 ; j< n ;j++){ // tavel a col
-              if(i==0 && j ==0){
-                dp[i][j] = grid[i][j];
-                continue;
-              }
-              int right = 0;
-              int down = 0;
-              if(i == 0 && j < n ){
-             dp[i][j] = dp[i][j-1] + grid[i][j];
-             continue;
-              }
-              if(j==0 && i < m){
-                dp[i][j] = dp[i-1][j] + grid[i][j];
-                continue;
-              }
-              right = dp[i-1][j] + grid[i][j];
-              down = dp[i][j-1] + grid[i][j];
-              dp[i][j] = Math.min(right , down);
+        int[] prev = new int[n];
+
+        for (int i = 0; i < m; i++) {
+            int[] temp = new int[n];
+
+            for (int j = 0; j < n; j++) {
+                if (i == 0 && j == 0)
+                    temp[j] = grid[i][j]; 
+                else {
+               int up = Integer.MAX_VALUE;
+                if (i > 0) {
+               up = prev[j] + grid[i][j];
+                }
+                int left = Integer.MAX_VALUE;
+                if (j > 0) {
+                    left = temp[j - 1] + grid[i][j];
+                }
+                    temp[j] = Math.min(up, left);
+                }
             }
+            prev = temp; 
         }
-      return dp[m-1][n-1];
-     }
+
+        return prev[n - 1];
+    }
 }
