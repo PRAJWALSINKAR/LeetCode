@@ -1,21 +1,20 @@
 class Solution {
     public int minimumTotal(List<List<Integer>> triangle) {
-        int n = triangle.size();
-        int [][] dp = new int[n][n];
+        int m = triangle.size();
+        int [] dp = new int[m];
 
-        for(int j = 0;j < n;j++){     // step 1 :- base condition (last row same)
-            dp[n-1][j] = triangle.get(n-1).get(j); 
+        for(int i = 0 ; i< m; i++){
+            dp[i] = triangle.get(m-1).get(i);
         }
-       // step 2 :- we find out every point minimum value
-        for(int i = n-2; i >= 0 ; i--){   // last 2nd row -> last col -> TO-> last 2nd row -> 0 col
-            for(int j = i ; j>=0 ; j-- ){   // last 2nd row(ex 3 row -> the elemeant in that is also 3 )
-                int down = triangle.get(i).get(j) + dp[i+1][j]; 
-                int downleft = triangle.get(i).get(j) + dp[i+1][j+1];
-               
-               dp[i][j] = Math.min(down , downleft); 
 
-            }
+        for(int i = m-2 ; i >=0;i--){
+            for(int j = 0 ; j<=i ; j++){
+                int bottom = dp[j];
+                int bottomLeft = dp[j+1];
+
+                dp[j] = Math.min(bottom , bottomLeft) + triangle.get(i).get(j);
+             }
         }
-        return dp[0][0];
+        return dp[0];
     }
 }
