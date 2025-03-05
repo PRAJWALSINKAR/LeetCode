@@ -1,38 +1,37 @@
 class Solution {
     public int minFallingPathSum(int[][] matrix) {
-        int m = matrix.length;
-        int [][] dp = new int[m][m];
+        int n = matrix.length;
+        int m = matrix[0].length;
 
-        for(int i = 0 ; i< m ; i++){
-            for(int j = 0 ; j< m ; j++){
-                if(i == 0){
-                    dp[i][j] = matrix[i][j];
-                    continue;
-                }
-            int left = Integer.MAX_VALUE;
-            int middle = Integer.MAX_VALUE;
-            int right = Integer.MAX_VALUE;
-                if(j>0){
-                     left = dp[i-1][j-1] + matrix[i][j];
-                }
-                if(j<m-1){
-                    right = dp[i-1][j+1] + matrix[i][j];
-                }
-                middle = dp[i-1][j] + matrix[i][j];
+        int[] prev = new int[m];
+        int[] cur = new int[m];
 
-            int min1 = Math.min(left , right);
-            int min2 = Math.min(min1 , middle); 
+        // Initialize the first row
+        for (int j = 0; j < m; j++) {
+            prev[j] = matrix[0][j];
+        }
 
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                int up = matrix[i][j] + prev[j];
 
-            dp[i][j] = min2;
+            int leftDiagonal = (j - 1 >= 0) ? matrix[i][j] + prev[j - 1] : matrix[i][j] + Integer.MAX_VALUE -1000;
+            int rightDiagonal = (j + 1 < m) ? matrix[i][j] + prev[j + 1] : matrix[i][j] + Integer.MAX_VALUE- 1000;
+
+            
+
+                // Store the minimum of the three paths in cur
+                cur[j] = Math.min(up, Math.min(leftDiagonal, rightDiagonal));
             }
+            // Update prev for the next row
+            prev = cur.clone();
         }
-        int min = Integer.MAX_VALUE;
-        for(int i = 0 ; i< m ; i++){
-           if(min > dp[m-1][i]){
-            min = dp[m-1][i];
-           }
+
+        int mini = Integer.MAX_VALUE;
+        for (int j = 0; j < m; j++) {
+            mini = Math.min(mini, prev[j]);
         }
-        return min;
+
+        return mini;
     }
 }
