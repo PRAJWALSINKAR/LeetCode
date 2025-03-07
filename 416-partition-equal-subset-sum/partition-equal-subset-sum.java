@@ -1,42 +1,39 @@
 class Solution {
     public boolean canPartition(int[] nums) {
         int n = nums.length;
-        int sum = 0;
-        int target=0;
-        for(int i : nums){
-            sum += i;
+        int target= 0;
+        int sum=0;
+        for(int i : nums ){
+            sum += i ;
         }
-        if(sum % 2 ==0){
-            target = sum / 2;
+        if(sum % 2 == 0){
+            target = sum /2;
         }else{
             return false;
         }
-        int [][] dp = new int[n][target+1];
-        for(int i = 0 ;i<n ; i++){
-            Arrays.fill(dp[i] , -1);
-        } 
-     return helper(n-1 , target , nums , dp);
-    }
-    public boolean helper(int ind , int target , int[] nums, int [][] dp){
-        if(target == 0){
-            return true;
+        boolean [][] dp = new boolean[n][target+1];
+
+        for(int i =0;i<n ;i++){
+            dp[i][0] = true;
         }
-        if(ind == 0){
-            return target==nums[0];
+        if(nums[0] <= target){
+            dp[0][nums[0]] = true;
         }
-        if(dp[ind][target] != -1){
-            return dp[ind][target]==1;
-       }
-       boolean notTaken = helper(ind-1,target , nums,dp);
-       boolean taken = false;
-       if(target >= nums[ind]){
-        taken = helper(ind-1,target-nums[ind] , nums, dp);
-       }
-       if(taken || notTaken){
-        dp[ind][target] = 1;
-       }else{
-        dp[ind][target] = 0;
-       }
-       return dp[ind][target]==1;
+        for(int i = 1 ; i<n; i++){
+            for(int j=1; j<= target ; j++){
+                boolean notTake = dp[i-1][j];
+
+                boolean take = false;
+                if(j >= nums[i]){
+                    take = dp[i-1][j-nums[i]];
+                }
+                if(take || notTake){
+                    dp[i][j]=true;
+                }else{
+                    dp[i][j] = false;
+                }
+           }
+        }
+        return dp[n-1][target];
     }
 }
