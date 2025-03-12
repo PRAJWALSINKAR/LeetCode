@@ -6,7 +6,7 @@ class Solution {
             Arrays.fill(dp[i] , -1);
         }
         int result= helper(n-1 , amount , coins , dp);
-        if (result == Integer.MAX_VALUE - 1) {
+        if (result == Integer.MAX_VALUE - 2) {
         return -1;
         }
         return result;
@@ -18,13 +18,13 @@ class Solution {
           if(target % nums[ind] ==0){
             return target / nums[ind];
           }else{
-            return Integer.MAX_VALUE-1;
+            return Integer.MAX_VALUE-2;
           }
         }
         if(dp[ind][target] != -1)return dp[ind][target];
 
         int nonTake = helper(ind - 1 , target , nums , dp);
-        int take = Integer.MAX_VALUE-1;
+        int take = Integer.MAX_VALUE-2;
         if(target >= nums[ind]){
             take = 1 + helper(ind  , target - nums[ind] , nums , dp); 
         }
