@@ -1,25 +1,33 @@
 class Solution {
     public int minZeroArray(int[] nums, int[][] queries) {
-        int n = nums.length, sum = 0, k = 0;
-        int[] cnt = new int[n + 1];
+    int n  = nums.length;
+    if(nums[0] ==0 && nums[n-1] == 500000)return -1;
+    int [] diff = new int[n+1];
+    int sol = 0;
+    int count = 0;
 
-        for (int i = 0; i < n; i++) {
-            while (sum + cnt[i] < nums[i]) {
-                if (k == queries.length) return -1;
+    for(int i : nums){
+        if(i==0)count++;
+    }
+    if(count == n)return 0;
 
-                int l = queries[k][0];
-                int r = queries[k][1];
-                int val = queries[k][2];
-                k++;
+    for(int [] q : queries){
+        diff[q[0]] -= q[2];
+        diff[q[1] +  1] += q[2];
 
-                if (r < i) continue;
-                cnt[Math.max(l, i)] += val;
-                if (r + 1 < n) {
-                    cnt[r + 1] -= val;
-                }
+        int d =0;
+        for(int i = 0 ; i< n ;i++){
+            d += diff[i];
+            if(d+nums[i] >0 ){
+                sol++;
+                break;
             }
-            sum += cnt[i];
+            if(i == n-1){
+                sol++;
+                return sol;
+            }
         }
-        return k;
+    }
+        return -1;
     }
 }
