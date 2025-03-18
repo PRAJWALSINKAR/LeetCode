@@ -1,22 +1,13 @@
 class Solution {
     public boolean divideArray(int[] nums) {
-        int n = nums.length;
-        int pair = n / 2;
-        HashMap<Integer , Integer> ans = new HashMap<>();
-
-        for(int i = 0 ; i< n ;i++){
-            if(ans.containsKey(nums[i])){
-                ans.put(nums[i],ans.get(nums[i])+1);
-            }else{
-                ans.put(nums[i] , 1);
-            }
+        int len = nums.length;
+        int xor1=0, xor2=0;
+        
+        for(int i=0;i<len;i++){
+            xor1 = nums[i]^xor1;
+            xor2 = (nums[i]+1)^xor2;
         }
-
-        for(int i : ans.values()){
-            if(i % 2 != 0){
-                return false;
-            }
-        }
-        return true;
+        return xor1==0 && xor2==0;
     }
-}
+} 
+ 
