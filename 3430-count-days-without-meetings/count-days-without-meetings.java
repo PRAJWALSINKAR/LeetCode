@@ -9,7 +9,7 @@ class Solution {
             int start = meeting[0], end = meeting[1];
 
             // Add current range of days without a meeting
-            if (start > latestEnd + 1) {
+            if (start > latestEnd) {
                 freeDays += start - latestEnd - 1;
             }
 
