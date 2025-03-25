@@ -1,35 +1,35 @@
 class Solution {
     public String minWindow(String s, String t) {
-        if(s.length() < t.length())return "";
-        
-        int [] map = new int[128];
+        if (s.length() < t.length())
+            return "";
         int count = t.length();
-        int start =0,end=0,minStart =0,minLen = Integer.MAX_VALUE;
+        int left = 0, right = 0, minStart = 0;
+      int  minlen = Integer.MAX_VALUE;
+        int[] arr = new int[128];
+        for (char c : t.toCharArray()) {
+            arr[c]++;
+        }
 
-        for(char c : t.toCharArray()){
-            map[c]++;
-        } 
-
-        while(end< s.length()){
-            if(map[s.charAt(end)] > 0){
+        while (right < s.length()) {
+            if (arr[s.charAt(right)] > 0) {
                 count--;
             }
-            map[s.charAt(end)]--;
+                 arr[s.charAt(right)]--;
 
-            while(count==0){
-                if(end - start + 1 < minLen){
-                    minStart = start;
-                    minLen = end - start +1;
+            while (count == 0) {
+                if (right - left + 1 < minlen) {
+                    minStart = left;
+                    minlen = right - left + 1;
                 }
-                map[s.charAt(start)]++;
-                if(map[s.charAt(start)] > 0){
+                arr[s.charAt(left)]++;
+                if (arr[s.charAt(left)] > 0) {
                     count++;
                 }
-                start++;
+                left++;
             }
-            end++;
+            right++;
         }
-    if(minLen == Integer.MAX_VALUE)return "";
-    return s.substring(minStart , minStart + minLen);
+        if(minlen == Integer.MAX_VALUE)return "";
+        return s.substring(minStart , minStart + minlen);
     }
 }
