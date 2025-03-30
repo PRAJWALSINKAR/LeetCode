@@ -15,21 +15,38 @@
  */
 class Solution {
     public List<Integer> postorderTraversal(TreeNode root) {
-        Stack<TreeNode> stk1 = new Stack<>();
-        Stack<TreeNode> stk2 = new Stack<>();
-        List<Integer> lis = new ArrayList<>();
-        
-        if(root == null)return lis;
-        stk1.push(root);
-        while(!stk1.isEmpty()){
-            TreeNode ch = stk1.pop();
-            stk2.push(ch);
-            if(ch.left != null)stk1.push(ch.left);
-            if(ch.right != null)stk1.push(ch.right);
+      List<Integer> result = new ArrayList<>();
+        if (root == null) return result;
+
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode prev = null;
+        stack.push(root);
+
+        while (!stack.isEmpty()) {
+            TreeNode curr = stack.peek();
+            
+            // Traverse down the tree
+            if (prev == null || prev.left == curr || prev.right == curr) {
+                if (curr.left != null) {
+                    stack.push(curr.left);
+                } else if (curr.right != null) {
+                    stack.push(curr.right);
+                }
+            } 
+            // Traverse up from the left subtree
+            else if (curr.left == prev) {
+                if (curr.right != null) {
+                    stack.push(curr.right);
+                }
+            } 
+            // Traverse up from the right subtree
+            else {
+                result.add(curr.val);
+                stack.pop();
+            }
+
+            prev = curr;
         }
-        while(!stk2.isEmpty()){
-            lis.add(stk2.pop().val);   
-        }
-        return lis;
+        return result;
     }
 }
