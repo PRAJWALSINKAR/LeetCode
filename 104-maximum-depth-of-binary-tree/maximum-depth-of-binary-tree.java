@@ -19,7 +19,7 @@ class Solution {
        int x = 0;
        if(root  == null)return x;
 
-       return helper(root)/2;
+       return helper(root);
        
     
     }
@@ -27,8 +27,8 @@ class Solution {
         if(node == null){
             return 0;
         }
-        int left = 1+helper(node.left);
-        int right = 1 +helper(node.right);
+        int left = helper(node.left);
+        int right =helper(node.right);
         return 1 + Math.max(left , right);
     }
 }
