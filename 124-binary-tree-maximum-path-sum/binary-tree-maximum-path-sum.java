@@ -14,23 +14,25 @@
  * }
  */
 class Solution {
+    int max = 0;
+    int count = 0;
     public int maxPathSum(TreeNode root) {
-        int[] maxi = {Integer.MIN_VALUE};  // Use array to store max path sum
-        findMaxPathSum(root, maxi);
-        return maxi[0];  // Return final max path sum
+        if(root == null ) return 0;
+        count++;
+        if(count == 1)max = root.val;
+        int left = Math.max(0,maxPathSum(root.left)) ;
+        int right = Math.max(0 , maxPathSum(root.right));
+        count--;
+        
+        if(right <= 0 && left <= 0){
+            max= Math.max(max,root.val);
+        }
+        else{
+             max = Math.max(max,right+left+root.val);
+        }
+        if(count  == 0)return max ;
+
+        return Math.max(left,right)+root.val;
+        
     }
-
-    private int findMaxPathSum(TreeNode root, int[] maxi) {
-        if (root == null) return 0;  // Base case
-
-        // Recursively get max path sum for left and right subtrees
-        int leftMaxPath = Math.max(0, findMaxPathSum(root.left, maxi));
-        int rightMaxPath = Math.max(0, findMaxPathSum(root.right, maxi));
-
-        // Update the global maximum sum considering the current node
-        maxi[0] = Math.max(maxi[0], leftMaxPath + rightMaxPath + root.val);
-
-        // Return max sum path considering only one branch (left or right)
-        return root.val + Math.max(leftMaxPath, rightMaxPath);
-    }
-}
+} 
