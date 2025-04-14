@@ -1,25 +1,32 @@
-import java.util.Stack;
-
 class Solution {
-    public int trap(int[] height) {
-        int n = height.length;
-        int water = 0;
-        Stack<Integer> stack = new Stack<>();
+    public int trap(int[] arr) {
+        int len = arr.length;
+        int leftMax =arr[0];
+        int rightMax = arr[len-1];
+        int left = 0;
+        int right = len-1;
+        int total = 0;
 
-        for (int right = 0; right < n; right++) {
-            while (!stack.isEmpty() && height[stack.peek()] < height[right]) {
-                int mid = stack.pop();
-                if (stack.isEmpty())
-                    break;
-
-                int left = stack.peek();
-           int minHeight = Math.min(height[right], height[left]) - height[mid];
-                int width = right - left - 1;
-                water += minHeight * width;
+        while(left < right){
+            if(leftMax < rightMax){
+                left++;
+                if(leftMax <= arr[left]){
+                    leftMax = arr[left];
+                }
+                else{
+                    total += leftMax - arr[left];
+                }
             }
-            stack.push(right);
-        }
-
-        return water;
+            else{
+                right--;
+                if(rightMax <= arr[right]){
+                    rightMax = arr[right];
+                }
+                else{
+                    total += rightMax - arr[right];
+                }
+            }
+        } 
+        return total;
     }
 }
