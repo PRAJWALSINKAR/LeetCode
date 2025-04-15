@@ -3,28 +3,29 @@ class Solution {
         Stack<Integer> stk = new Stack<>();
 
         for (int i : nums) {
-            if (i > 0) {//positive push diretcly,bcoz no colligion
-                stk.push(i);
+            if (i > 0) {
+                stk.push(i); // Positive direction, no collision
             } else {
                 while (!stk.isEmpty() && stk.peek() > 0) {
-
-                    if (stk.peek() < Math.abs(i)) {
-                        stk.pop();
-                        continue;
-                    } else if (stk.peek() == Math.abs(i)) {
-                        stk.pop();
-                        i=0;
+                    if (stk.peek() < -i) {
+                        stk.pop(); // Smaller right asteroid explodes
+                        
+                    } else if (stk.peek() == -i) {
+                        stk.pop(); // Equal size: both explode
+                        i = 0;
                         break;
                     } else {
-                        i = 0; // right astroid explosed
+                        // Left asteroid is smaller, it explodes
+                        i = 0;
                         break;
                     }
                 }
                 if (i != 0) {
-                    stk.push(i);
+                    stk.push(i); // Push surviving left asteroid
                 }
             }
         }
+
         int n = stk.size();
         int[] ans = new int[n];
         for (int i = n - 1; i >= 0; i--) {
