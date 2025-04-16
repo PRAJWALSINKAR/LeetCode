@@ -18,7 +18,7 @@ class Solution {
         }
         stk.clear();
         for (int i = n-1; i >= 0; i--) {
-            while (!stk.isEmpty() && heights[stk.peek()] >= heights[i]) {
+            while (!stk.isEmpty() && heights[stk.peek()] > heights[i]) {
                 stk.pop();
             }
             if (stk.isEmpty()) {
