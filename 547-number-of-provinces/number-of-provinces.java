@@ -1,40 +1,47 @@
 class Solution {
-
-    public void dfs(List<Integer>[] adjList, boolean[] visited, int curr) {
-        visited[curr] = true;
-        for (int neighbor : adjList[curr]) {
-            if (!visited[neighbor]) {
-                dfs(adjList, visited, neighbor);
-            }
-        }
-    }
-
     public int findCircleNum(int[][] isConnected) {
-        int V = isConnected.length;
-        List<Integer>[] adjList = new ArrayList[V];
+       /* 
+    1 => Calculate the length of the matrix to determine the number of nodes (n).
+    2 => Create a 2D ArrayList (adjLis) where each node has its own list to store its neighbors.
+    3 => Use a double loop to convert the adjacency matrix to an adjacency list. If a node `i` is connected to `j` (isConnected[i][j] == 1), add `j` to the neighbor list of `i` and vice versa (undirected graph).
+    4 => Create a `vis` array to track which nodes have been visited during DFS (1 for visited, 0 for unvisited).
+    5 => Apply DFS (Depth-First Search) to explore all nodes connected to the current node, marking nodes as visited.
+    6 => If the DFS discovers that nodes are connected (i.e., they belong to the same connected component), increment the province count by 1.
+    7 => After all nodes are visited, return the total number of provinces (connected components).
+*/
 
-        for (int i = 0; i < V; i++) {
-            adjList[i] = new ArrayList<>();
+        int n = isConnected.length;
+        ArrayList<ArrayList<Integer>> adjLis = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            adjLis.add(new ArrayList<>());
         }
-
-         for (int i = 0; i < V; i++) {
-            for (int j = 0; j < V; j++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
                 if (isConnected[i][j] == 1 && i != j) {
-                    adjList[i].add(j);
-                    adjList[j].add(i); // Since it's undirected
+                    adjLis.get(i).add(j);
+                    adjLis.get(j).add(i);
                 }
             }
         }
+        int[] vis = new int[n];
+        int count = 0;
 
-        boolean[] visited = new boolean[V];
-        int provinces = 0;
-        for (int i = 0; i < V; i++) {
-            if (!visited[i]) {
-                provinces++;
-                dfs(adjList, visited, i);
+        for (int i = 0; i < n; i++) {
+            if (vis[i] == 0) {
+                count++;
+                dfs(i, adjLis, vis);
             }
         }
+        return count;
+    }
 
-        return provinces;
+    public void dfs(int node, ArrayList<ArrayList<Integer>> adjLis, int[] vis) {
+        vis[node] = 1;
+        for (int nde : adjLis.get(node)) {
+            if (vis[nde] == 0) {
+                dfs(nde, adjLis, vis);
+            }
+        }
     }
 }
