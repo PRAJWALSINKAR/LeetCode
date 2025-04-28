@@ -1,44 +1,40 @@
 class Solution {
     public List<Integer> eventualSafeNodes(int[][] graph) {
-       int n = graph.length;
-        
-        List<List<Integer>> revAdj = new ArrayList<>();
+        int n = graph.length;
+        boolean[] vis = new boolean[n];
+        boolean[] onPath = new boolean[n];
+        boolean[] safe = new boolean[n];
+
         for (int i = 0; i < n; i++) {
-            revAdj.add(new ArrayList<>());
-        }
-        
-        int[] indegree = new int[n];
-        
-        // Build reversed graph
-        for (int i = 0; i < n; i++) {
-            for (int neighbor : graph[i]) {
-                revAdj.get(neighbor).add(i); // Reverse the edge
-                indegree[i]++; // Original node has outgoing edge
+            if (!vis[i]) {
+                dfs(i, vis, onPath, graph, safe);
             }
         }
-        
-        Queue<Integer> q = new LinkedList<>();
-        // Start with nodes having no outgoing edges (terminal nodes)
+        List<Integer> ans = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            if (indegree[i] == 0) {
-                q.add(i);
+            if (safe[i]) {
+                ans.add(i);
             }
         }
-        
-        List<Integer> safeNodes = new ArrayList<>();
-        
-        while (!q.isEmpty()) {
-            int node = q.poll();
-            safeNodes.add(node);
-            for (int neighbor : revAdj.get(node)) {
-                indegree[neighbor]--;
-                if (indegree[neighbor] == 0) {
-                    q.add(neighbor);
+        return ans;
+    }
+
+    public boolean dfs(int node , boolean[] vis , boolean[] onPath , int [][]graph , boolean [] safe){
+        vis[node] = true;
+        onPath[node] = true;
+         
+          for (int neighbor : graph[node]) {
+            if (!vis[neighbor]) {
+                if (dfs(neighbor, vis , onPath , graph , safe)) {
+                    return true;
                 }
             }
-        }
-        
-        Collections.sort(safeNodes);
-        return safeNodes;
+            else if(onPath[neighbor]){
+                return true;
+            }
+        }            
+        onPath[node] = false;
+        safe[node] = true;
+        return false;
     }
 }
