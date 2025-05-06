@@ -27,3 +27,6 @@ class Solution {
         }
     }
 }
+
+// time complixity = O(N)
+// Space complixity = O(1)
