@@ -1,17 +1,22 @@
 class Solution {
     public int majorityElement(int[] nums) {
-        HashMap<Integer , Integer> map = new HashMap<>();
-        for(int i =0;i< nums.length ; i++){
-         map.put(nums[i] , map.getOrDefault(nums[i] , 0) +1);
-
-         if(map.get(nums[i]) > nums.length / 2){
-            return nums[i];
-         }
+        int k = nums[0];
+        int count = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] == k) {
+                count++;
+            } else {
+                count--;
+                if (count == 0) {
+                    k = nums[i];
+                    count = 1;
+                }
+            }
         }
-    return -1;
+        return k;
     }
 }
-/*
-time complixity  ->  O(n) -> One time itration
-space comlixity ->  O(n) -> in worst case hashMAp Store All the Distinct values
+/* 
+time complixity -> O(N) -> iterate  one
+space complixity -> O(1) --> use contants only
 */
