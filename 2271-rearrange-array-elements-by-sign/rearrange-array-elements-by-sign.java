@@ -1,25 +1,22 @@
 class Solution {
     public int[] rearrangeArray(int[] nums) {
-        int n = nums.length;
-        int[] count = new int[n];
-        int pos = 0, neg = n / 2;
+           int n = nums.length;
+        int[] newArray = new int[n];
+
+        int positive = 0;
+        int negative = 1;
+
         for (int i = 0; i < n; i++) {
             if (nums[i] > 0) {
-                count[pos++] = nums[i];
+                newArray[positive] = nums[i];
+                positive = positive + 2;
             } else {
-                count[neg++] = nums[i];
+                newArray[negative] = nums[i];
+                negative = negative + 2;
             }
         }
-       pos = 0;
-       neg = n / 2;
-        for (int i = 0; i < n; i++) {
-            if (i%2 == 0) {
-                nums[i] = count[pos++];
-            } else {
-                nums[i] = count[neg++];
-            }
-        }
-        return nums;
+        return newArray;
+
     }
 }
-// time and space -- O(N)
+// time  and space  --- O(N) 
