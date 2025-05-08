@@ -22,3 +22,4 @@ class Solution {
         return nums;
     }
 }
+// time and space -- O(N)
