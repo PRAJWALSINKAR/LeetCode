@@ -1,17 +1,15 @@
+//****focus on clean space method*****
 class Solution {
     public String reverseWords(String s) {
         char[] a = s.toCharArray();
-        int n = a.length - 1;
-        int low = 0;
-        reverse(a, low, n);
-        reverseWord(a, n);
-        return cleanSpace(a, n);
+        int n = a.length;
+        reverse(0, n-1, a);
+        WordReverse(n, a);
+        return cleanSpace(n, a);
     }
 
-    public static void reverse(char[] a, int low, int n) {
-        int i = low;
-        int j = n;
-        while (i <= j) {
+    public void reverse(int i, int j, char[] a) {
+        while (i < j) {
             char temp = a[i];
             a[i] = a[j];
             a[j] = temp;
@@ -20,30 +18,32 @@ class Solution {
         }
     }
 
-    public static void reverseWord(char[] a, int n) {
-        int i =0;
-        int j = 0;
-        while (i <= n) { // check condition --> i is out of array
-        
-            while (i < n && a[i] == ' ') i++;//exit after letter found and spaces are over
-            j = i;
-            while (j <= n && a[j] != ' ') j++;//exit after a space and letters are end 
-            reverse(a, i, j - 1);//letter to (space found - 1) reverse [eule = blue]
-            i = j+1; //+1 = space
-            }
-            
-         
+    public void WordReverse(int n, char[] a) {
+        int low = 0;
+        int high = 0;
+        while (low < n) {
+            while (low < n && a[low] == ' ')low++;
+            high = low ;
+            while (high < n && a[high] != ' ')high++;
+            reverse(low, high - 1, a);
+            low = high;
         }
-    
+    }
 
-    public static String cleanSpace(char[] a, int n) {// focus on this step
-        int i = 0;
-        int j = 0;
-        while (i <= n) {
-            while (i <= n && a[i] == ' ') i++;//space found continue and letter found break
-            while (i <= n && a[i] != ' ') a[j++] = a[i++]; // while leters continue(continue and add)
-            if (i <= n) a[j++] = ' ';//less than add a space between them("ab_cd")
+    public String cleanSpace(int n, char[] a) {
+        int i = 0, j = 0;
+        while (i < n) {
+            while (i < n && a[i] == ' ')i++;
+            while (i < n && a[i] != ' ') a[j++] = a[i++];
+            while (i < n && a[i] == ' ') i++;
+            if (i < n)
+                a[j++] = ' ';
         }
-        return new String(a).substring(0, j).trim();//these method remove startig and ending spaces
+        return new String(a).substring(0, j);
     }
 }
+
+/*
+time = O(N)
+space =O(N)
+*/
