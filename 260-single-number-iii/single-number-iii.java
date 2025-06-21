@@ -4,13 +4,15 @@ class Solution {
         for (int i : nums) {
             xor ^= i;
         }
-
-        int mask = 1;
+      int rightMostBit = xor & -xor;
+       /*
+       Alternative
+        int mask = 1;  
         while ((xor & mask) == 0) {
             mask = mask << 1;
         }
         int rightMostBit = mask;
-
+*/
         int b1 = 0;
         int b2 = 0;
         for (int num : nums) {
