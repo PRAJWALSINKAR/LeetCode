@@ -8,6 +8,8 @@
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
+ 
+ //my approch
 class Solution {
     public ListNode middleNode(ListNode head) {
         ListNode curr = head;
