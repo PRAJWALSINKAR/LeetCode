@@ -8,6 +8,7 @@
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
+ // int privious sumbition when we use recursion it will take an extra space and extra time 
 class Solution {
     public boolean isPalindrome(ListNode head) {
         //first We found out an middle
@@ -31,18 +32,14 @@ class Solution {
        return true;
     }
     private ListNode reverse(ListNode head){
-        if(head == null || head.next == null){
-            return head;
+      ListNode curr = head;
+        ListNode prev = null;
+        while(curr != null){
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
         }
-        ListNode newhead = reverse(head.next);
-
-        ListNode frount = head.next;
-        frount.next = head;
-
-        head.next = null;
-
-        return newhead;
-         
-
+        return prev;
     }
 }
