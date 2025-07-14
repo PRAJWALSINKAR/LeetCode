@@ -1,6 +1,6 @@
 class Solution {
     public int countPrimes(int n) {
-        if(n <= 2)return 0;
+         if(n <= 2)return 0;
         int [] isPrime = new int[n];
         Arrays.fill(isPrime , 1);
         isPrime[0]=isPrime[1] = 0;//it is prime number 0 1
