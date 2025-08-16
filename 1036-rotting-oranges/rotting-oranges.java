@@ -1,59 +1,44 @@
 class Solution {
-    
     public int orangesRotting(int[][] grid) {
-        // First count Fresh Oranges AND Keep rotten oranges in Queue
-        //Store Rotten oranges [row, col ] 
-        Queue<int[]> q = new LinkedList();
-        int row = grid.length;
-        int col = grid[0].length;
-        int minutes = -1;
-        int fresh = 0;
+        int rowLen = grid.length;
+        int colLen = grid[0].length;
+        Queue<Pair<Integer,Integer>> que = new LinkedList<>();
+        int freshOranges = 0;
+    
+        for(int i =0;i<rowLen;i++){
+            for(int j = 0; j< colLen;j++){
 
-        for (int r = 0; r < row; r++) {
-            for (int c = 0; c < col; c++) {
-                // Rotten Oranges check
-                if (grid[r][c] == 2) {
-                    q.offer(new int[] { r, c });
-
-                 }  //Fresh Oranges check
-                else if (grid[r][c] == 1) {
-                    fresh++;
+                if(grid[i][j] == 2){
+                    que.add(new Pair<>(i,j));
                 }
+                else if(grid[i][j] == 1 ) freshOranges++;
             }
         }
-        // If no fresh orange is there
-        if(fresh==0) return 0;
-        
-// All 4 directions L R U D
-        int[][] dir={{1,0},{0,1},{-1,0},{0,-1}};
-        while(!q.isEmpty()){
-            minutes++;
-            // How many rotten oranges are there; if we don't store the size BFS will traverse the newly rotten oranges which should rotten in the next minutes
-            int size=q.size();
 
-            while(size-->0){
-                int[] oranges=q.poll();
-                // Check all its neighbor
-                for(int[] d: dir){
-                    // newly rotten oranges row position
-                    int nr=oranges[0]+d[0];
-                    // newly rotten oranges column position
-                    int nc=oranges[1]+d[1];
-// check out of bounds AND if there any fresh oranges are there [in neighbors]
-                    if(nr<row && nc<col && nr>=0 && nc>=0 && grid[nr][nc]==1){
-                        // rotten fresh
-                        grid[nr][nc]=2;
-                        fresh--;
-                        // Adding newly rotten oranges
-                        q.offer(new int[]{nr,nc});
+        int minutes= 0;
+        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+        while(!que.isEmpty() && freshOranges >0){
+            int size = que.size();
+            minutes++;
+
+            for(int i = 0;i<size;i++){
+                int r = que.peek().getKey();
+                int c = que.peek().getValue();
+                que.remove();
+
+                for(int[] direction : directions){
+                    int cr = r + direction[0];
+                    int cc = c + direction[1];
+
+                    if(cc >= 0 && cc < colLen && cr >= 0 && cr<rowLen && grid[cr][cc] == 1){
+                        grid[cr][cc] = 2;
+                        freshOranges --;
+                        que.add(new Pair<>(cr,cc));
                     }
                 }
             }
-
-
         }
-        // If fresh!=0 means all oranges are not rotten. Hence return -1
-return    fresh==0?minutes:-1;
-
+        return freshOranges ==0 ? minutes:-1;
     }
 }
