@@ -1,42 +1,39 @@
 class Solution {
     public List<Integer> eventualSafeNodes(int[][] graph) {
-        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
         int n = graph.length;
+        boolean[] vis = new boolean[n];
+        boolean[] path = new boolean[n];
+        boolean[] safe = new boolean[n];
+
         for (int i = 0; i < n; i++) {
-            adj.add(new ArrayList<>());
-        }
-        int inDegree[] = new int[n];
-        int count = 0;
-        for (int arr[] : graph) {
-            int size = arr.length;
-            for (int i = 0; i < size; i++) {
-                adj.get(arr[i]).add(count);
-                inDegree[count]++;
-            }
-            count++;
-        }
-        Queue<Integer> q = new LinkedList<>();
-        ArrayList<Integer> ans = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            if (inDegree[i] == 0) {
-                q.add(i);
-                ans.add(i);
+            if (!vis[i]) {
+                dfs(i, graph, vis, path, safe);
             }
         }
 
-        while (!q.isEmpty()) {
-            int node = q.poll();
-
-            for(int j : adj.get(node)){
-                inDegree[j]--;
-                if(inDegree[j] == 0){
-                    q.add(j);
-                    ans.add(j);
-                }
-            }
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (safe[i]) ans.add(i);
         }
-        Collections.sort(ans);
         return ans;
+    }
 
+    private boolean dfs(int node, int[][] graph, boolean[] vis, boolean[] path, boolean[] safe) {
+        vis[node] = true;
+        path[node] = true;
+
+        for (int nei : graph[node]) {
+            if (!vis[nei]) {
+                if (dfs(nei, graph, vis, path, safe)) {
+                    return true; // cycle found → unsafe
+                }
+            } else if (path[nei]) {
+                return true; // cycle found → unsafe
+            }
+        }
+
+        path[node] = false;
+        safe[node] = true; // no cycle found from this node
+        return false;
     }
 }
