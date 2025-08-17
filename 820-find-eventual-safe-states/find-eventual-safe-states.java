@@ -1,40 +1,42 @@
 class Solution {
     public List<Integer> eventualSafeNodes(int[][] graph) {
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
         int n = graph.length;
-        boolean[] vis = new boolean[n];
-        boolean[] onPath = new boolean[n];
-        boolean[] safe = new boolean[n];
-
         for (int i = 0; i < n; i++) {
-            if (!vis[i]) {
-                dfs(i, vis, onPath, graph, safe);
-            }
+            adj.add(new ArrayList<>());
         }
-        List<Integer> ans = new ArrayList<>();
+        int inDegree[] = new int[n];
+        int count = 0;
+        for (int arr[] : graph) {
+            int size = arr.length;
+            for (int i = 0; i < size; i++) {
+                adj.get(arr[i]).add(count);
+                inDegree[count]++;
+            }
+            count++;
+        }
+        Queue<Integer> q = new LinkedList<>();
+        ArrayList<Integer> ans = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            if (safe[i]) {
+            if (inDegree[i] == 0) {
+                q.add(i);
                 ans.add(i);
             }
         }
-        return ans;
-    }
 
-    public boolean dfs(int node , boolean[] vis , boolean[] onPath , int [][]graph , boolean [] safe){
-        vis[node] = true;
-        onPath[node] = true;
-         
-          for (int neighbor : graph[node]) {
-            if (!vis[neighbor]) {
-                if (dfs(neighbor, vis , onPath , graph , safe)) {
-                    return true;
+        while (!q.isEmpty()) {
+            int node = q.poll();
+
+            for(int j : adj.get(node)){
+                inDegree[j]--;
+                if(inDegree[j] == 0){
+                    q.add(j);
+                    ans.add(j);
                 }
             }
-            else if(onPath[neighbor]){
-                return true;
-            }
-        }            
-        onPath[node] = false;
-        safe[node] = true;
-        return false;
+        }
+        Collections.sort(ans);
+        return ans;
+
     }
 }
