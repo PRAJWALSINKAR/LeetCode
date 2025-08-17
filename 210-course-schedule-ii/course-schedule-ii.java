@@ -1,39 +1,40 @@
 class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        List<List<Integer>> adj = new ArrayList<>();
-        int[] inDegree = new int[numCourses];
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        ArrayList<Integer> ans = new ArrayList<>();
+        Queue<Integer> q= new LinkedList<>();
+        int [] inDegree = new int [numCourses] ;
 
-        for (int i = 0; i < numCourses; i++) {
+        for(int i =0; i < numCourses ; i++ ){
             adj.add(new ArrayList<>());
         }
-
-        for (int[] prereq : prerequisites) {
-            int course = prereq[0];
-            int pre = prereq[1];
-            adj.get(pre).add(course);
-            inDegree[course]++;
+        for(int arr[] : prerequisites ){
+         adj.get(arr[1]).add(arr[0]);
+         inDegree[arr[0]]++;
         }
 
-        Queue<Integer> q = new LinkedList<>();
-        for (int i = 0; i < numCourses; i++) {
-            if (inDegree[i] == 0) {
-                q.offer(i);
+        for(int i = 0 ;i< numCourses;i++){
+            if(inDegree[i] == 0){
+                q.add(i);
+                ans.add(i);
             }
         }
-        int[] ans = new int[numCourses];
-        int index = 0;
+        while(!q.isEmpty()){
+           int node = q.poll();
 
-        while (!q.isEmpty()) {
-            int curr = q.poll();
-            ans[index++] = curr;
-
-            for (int neighbor : adj.get(curr)) {
-                inDegree[neighbor]--;
-                if (inDegree[neighbor] == 0) {
-                    q.offer(neighbor);
-                }
+           for(int j : adj.get(node)){
+            inDegree[j]--;
+            if(inDegree[j] == 0){
+                ans.add(j);
+                q.add(j);
             }
+           }
         }
-        return index == numCourses ? ans : new int[0];
+        if(ans.size() != numCourses) return new int[0];
+        int [] arr = new int[numCourses];
+        for(int i =0;i< numCourses ; i++){
+            arr[i]= ans.get(i);
+        }
+        return arr ;
     }
 }
