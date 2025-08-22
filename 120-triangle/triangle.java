@@ -1,20 +1,24 @@
 class Solution {
-    public int minimumTotal(List<List<Integer>> triangle) {
-        int m = triangle.size();
-        int [] dp = new int[m];
-
-        for(int i = 0 ; i< m; i++){
-            dp[i] = triangle.get(m-1).get(i);
+    public int minimumTotal(List<List<Integer>> arr) {
+        int n = arr.size();
+        int[][] dp = new int[n][n];
+        for(int [] zp : dp){
+            Arrays.fill(zp , Integer.MAX_VALUE);
         }
+        return helper(0, 0, dp, arr);
+    }
 
-        for(int i = m-2 ; i >=0;i--){
-            for(int j = 0 ; j<=i ; j++){
-                int bottom = dp[j];
-                int bottomLeft = dp[j+1];
+    public int helper(int row, int col, int[][] dp, List<List<Integer>> arr) {
+        if (row == arr.size() - 1)
+            return arr.get(row).get(col);
 
-                dp[j] = Math.min(bottom , bottomLeft) + triangle.get(i).get(j);
-             }
-        }
-        return dp[0];
+        if (dp[row][col] != Integer.MAX_VALUE)return dp[row][col];
+
+        int down = helper(row + 1, col, dp, arr);
+        int rightDown = helper(row + 1, col + 1, dp, arr);
+
+        dp[row][col] = arr.get(row).get(col) + Math.min(down, rightDown);
+
+        return dp[row][col];
     }
 }
