@@ -1,27 +1,34 @@
 class Solution {
     public int uniquePathsWithObstacles(int[][] arr) {
-    int m = arr.length;
-    int n = arr[0].length;
-    int [][] dp = new int[m][n]; 
-    if(arr[m-1][n-1] == 1)return 0;
-    return helper(0 , 0 , dp , arr);
-   }
-   public static int helper(int row , int col , int[][] dp, int [][] arr){//0 0 
-   
-    if(row < 0 || row >= arr.length || col <0 || col >= arr[0].length)return 0;
-    if(arr[row][col] == 1){
-        dp[row][col] =0;
-        return 0;
+        int m = arr.length;
+        int n = arr[0].length;
+        int [][] dp = new int[m][n];
+        if(arr[0][0] == 1)return 0;
+        boolean visJ = false;
+        for(int i = 0 ;  i < m;i++){
+            for(int j= 0;j< n ; j++){
+                if(j == 0 && arr[i][j] ==1){
+                    visJ = true;
+                    continue;
+                }
+                 
+                if(visJ && j==0)continue;
+                
+                if(i == 0 && arr[i][j] == 1)break;//if obstacle found in 1st row then all other roe elecment 0
+                
+                if(arr[i][j] == 1){  
+                    dp[i][j] =0;
+                    continue;
+                }
+                
+                if(i== 0 || j== 0){
+                    dp[i][j] = 1;
+                    continue;
+                
+                }
+                dp[i][j] = dp[i-1][j] +  dp[i][j-1] ;
+            }
+        }
+        return dp[m-1][n-1];
     }
-    if(row == arr.length -1 &&  col == arr[0].length-1)return 1;
-
-
-    if(dp[row][col] != 0)return dp[row][col];
-
-    int right = helper(row ,col+1, dp , arr); //0 1  return 1
-    int down = helper(row+1 , col , dp , arr); //1 0 
-
-    dp[row][col] = right + down;
-    return dp[row][col];
-   }
 }
