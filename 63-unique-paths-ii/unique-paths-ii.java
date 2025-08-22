@@ -8,10 +8,12 @@ class Solution {
    }
    public static int helper(int row , int col , int[][] dp, int [][] arr){//0 0 
    
-    if(row >= arr.length  || col >= arr[0].length)return 0;
-    if(arr[row][col] == 1)return 0;
-
-    if(row == arr.length -1 && col == arr[0].length-1)return 1;
+    if(row < 0 || row >= arr.length || col <0 || col >= arr[0].length)return 0;
+    if(arr[row][col] == 1){
+        dp[row][col] =0;
+        return 0;
+    }
+    if(row == arr.length -1 &&  col == arr[0].length-1)return 1;
 
 
     if(dp[row][col] != 0)return dp[row][col];
