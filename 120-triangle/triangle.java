@@ -1,24 +1,29 @@
 class Solution {
     public int minimumTotal(List<List<Integer>> arr) {
         int n = arr.size();
-        int[][] dp = new int[n][n];
-        for(int [] zp : dp){
-            Arrays.fill(zp , Integer.MAX_VALUE);
+        int[] prev = new int[n];
+        int []curr = new int [n];
+         
+        prev[0] = arr.get(0).get(0);
+
+        for(int i =1 ; i< n ;i++){
+            for(int j =0 ;j<arr.get(i).size() ; j++ ){
+                int up = Integer.MAX_VALUE;
+                int upLeft = Integer.MAX_VALUE;
+                if(j < arr.get(i).size() -1 ) {
+                    up = prev[j];
+                }
+                if( j> 0 ){
+                    upLeft = prev[j-1];
+                }
+                curr[j] =  Math.min(up , upLeft) + arr.get(i).get(j);
+            }
+            prev = curr.clone();
         }
-        return helper(0, 0, dp, arr);
-    }
-
-    public int helper(int row, int col, int[][] dp, List<List<Integer>> arr) {
-        if (row == arr.size() - 1)
-            return arr.get(row).get(col);
-
-        if (dp[row][col] != Integer.MAX_VALUE)return dp[row][col];
-
-        int down = helper(row + 1, col, dp, arr);
-        int rightDown = helper(row + 1, col + 1, dp, arr);
-
-        dp[row][col] = arr.get(row).get(col) + Math.min(down, rightDown);
-
-        return dp[row][col];
+        int ans =Integer.MAX_VALUE;
+        for(int i : prev){
+           ans = Math.min(i , ans);
+        }
+        return ans;
     }
 }
