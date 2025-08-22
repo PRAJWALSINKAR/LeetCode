@@ -1,30 +1,25 @@
 class Solution {
     public int minPathSum(int[][] grid) {
-        int m = grid.length;
+        int m =grid.length;
         int n = grid[0].length;
-        int[] prev = new int[n];
-
-        for (int i = 0; i < m; i++) {
-            int[] temp = new int[n];
-
-            for (int j = 0; j < n; j++) {
-                if (i == 0 && j == 0)
-                    temp[j] = grid[i][j]; 
-                else {
-               int up = Integer.MAX_VALUE;
-                if (i > 0) {
-               up = prev[j] + grid[i][j];
-                }
-                int left = Integer.MAX_VALUE;
-                if (j > 0) {
-                    left = temp[j - 1] + grid[i][j];
-                }
-                    temp[j] = Math.min(up, left);
-                }
-            }
-            prev = temp; 
+        int [][] dp =new int[m][n];
+        for(int [] arr : dp){
+        Arrays.fill(arr , Integer.MAX_VALUE);
         }
+        return helper(0 , 0 , grid , dp);
+    }
+    public static int helper(int row , int col , int [][] grid , int [][] dp){
+        if(row< 0 || col < 0 || row >= grid.length || col >= grid[0].length)return Integer.MAX_VALUE;
+        
+        if(row == grid.length-1 &&  col == grid[0].length-1)return grid[row][col];
 
-        return prev[n - 1];
+        if( dp[row][col] != Integer.MAX_VALUE)return dp[row][col];
+
+        int right = helper(row , col+1 , grid , dp);  
+        int down =  helper(row+1 , col , grid , dp);
+
+        dp[row][col] = grid[row][col] + Math.min(right , down);
+
+        return dp[row][col];
     }
 }
