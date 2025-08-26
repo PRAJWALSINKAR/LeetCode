@@ -1,29 +1,34 @@
+import java.util.*;
+
 class Solution {
     public int coinChange(int[] coins, int amount) {
         int n = coins.length;
+        int INF = Integer.MAX_VALUE - 500;
         
-        int [][] dp = new int[n][amount +1];
-        for(int[] i : dp){
-            Arrays.fill(i  , -1);
-        }
-        int ans = helper(n-1 , amount , coins , dp);
-        if(ans == Integer.MAX_VALUE-500)return -1;
-        return ans;
-    }
-    public static int helper(int ind , int target , int [] nums , int [][] dp){
-        if(ind == 0){
-            if(target % nums[ind]== 0)return target/nums[ind];
-            return Integer.MAX_VALUE-500;
+        int[][] dp = new int[n][amount + 1];
+
+        // Base case (using only the first coin)
+        for (int t = 0; t <= amount; t++) {
+            if (t % coins[0] == 0) {
+                dp[0][t] = t / coins[0];
+            } else {
+                dp[0][t] = INF;
+            }
         }
 
-        if(dp[ind][target] != -1)return dp[ind][target];
-
-        int nonTake = 0 + helper(ind -1, target , nums , dp);
-        int take = Integer.MAX_VALUE;
-        if(nums[ind] <= target){
-            take = Math.min(take , 1 + helper(ind ,target -  nums[ind] , nums , dp ));
+        // Fill the table
+        for (int i = 1; i < n; i++) {
+            for (int t = 0; t <= amount; t++) {
+                int nonTake = dp[i - 1][t];
+                int take = INF;
+                if (coins[i] <= t) {
+                    take = 1 + dp[i][t - coins[i]];
+                }
+                dp[i][t] = Math.min(take, nonTake);
+            }
         }
-        dp[ind][target] = Math.min(take , nonTake);
-        return dp[ind][target];
+
+        int ans = dp[n - 1][amount];
+        return (ans >= INF) ? -1 : ans;
     }
 }
