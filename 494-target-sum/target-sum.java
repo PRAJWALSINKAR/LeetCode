@@ -1,29 +1,37 @@
+import java.util.*;
+
 class Solution {
     public int findTargetSumWays(int[] nums, int target) {
-        int sum = 0;
-        int n = nums.length; 
-        for(int i : nums)sum +=i;
-        int dp[][] = new int[n][(sum+1)*2];
-        for(int arr[] : dp){
-            Arrays.fill(arr ,-1);
-        }
-        return helper(0 , 0 ,sum ,  target , nums ,dp);  
-    }
-    public static int helper(int ind , int currSum ,int sum , int target , int[] nums ,int[][]dp){
-        if(ind == nums.length){
-            if(currSum == target){
-                return 1;
-            }else{
-               return 0;
+        int n = nums.length;
+        int total = 0;
+        for (int x : nums) total += x;
+
+        // if target is outside possible range
+        if (target > total || target < -total) return 0;
+
+        int offset = total;
+        int[][] dp = new int[n + 1][2 * total + 1];
+
+        // Base case: with 0 elements, only sum=0 is possible (shifted by offset)
+        dp[0][offset] = 1;
+
+        // Fill table
+        for (int i = 1; i <= n; i++) {
+            int num = nums[i - 1];
+            for (int s = 0; s <= 2 * total; s++) {
+                if (dp[i - 1][s] != 0) {
+                    // add '+num'
+                    if (s + num <= 2 * total) {
+                        dp[i][s + num] += dp[i - 1][s];
+                    }
+                    // add '-num'
+                    if (s - num >= 0) {
+                        dp[i][s - num] += dp[i - 1][s];
+                    }
+                }
             }
         }
-        if(dp[ind][sum + currSum] != -1)return dp[ind][sum+currSum];
 
-        int pos = helper(ind +1 , currSum+nums[ind] , sum , target , nums , dp);
-        int neg = helper(ind +1 , currSum - nums[ind] , sum , target , nums , dp);
-
-        dp[ind][currSum + sum] = pos + neg;
-
-        return dp[ind][currSum + sum] ;
+        return dp[n][target + offset];
     }
 }
