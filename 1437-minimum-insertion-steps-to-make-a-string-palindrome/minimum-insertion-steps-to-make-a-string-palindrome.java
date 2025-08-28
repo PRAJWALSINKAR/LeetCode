@@ -1,24 +1,19 @@
 class Solution {
     public int minInsertions(String s) {
-        int  n = s.length();
-        int dp[][] = new int[n+1][n+1];
-       String s2 = new StringBuilder(s).reverse().toString();
-       int LongL = helper(s , s2 , dp);
-       return n-LongL;
-    }
-
-    public static int helper(String s1 , String s2 , int[][] dp){
-        int n = s1.length();
-
-        for(int i = 1 ; i <= n ; i++ ){
-            for(int j =1 ; j<= n ; j++){
-                if(s1.charAt(i-1) == s2.charAt(j-1)){
-                    dp[i][j] = 1 + dp[i-1][j-1];
-                }else{
-                    dp[i][j] = Math.max(dp[i-1][j] , dp[i][j-1]);
+        int n = s.length();
+        int[] dp = new int[n];
+        for (int i = n - 2; i >= 0; i--) {
+            int prev = 0;
+            for (int j = i + 1; j < n; j++) {
+                int temp = dp[j];
+                if (s.charAt(i) == s.charAt(j)) { // no need for insertion
+                    dp[j] = prev;
+                } else {
+                    dp[j] = Math.min(dp[j], dp[j-1]) + 1; // we nwwd +1 to add one element
                 }
+                prev = temp;
             }
         }
-        return dp[n][n];
+        return dp[n-1];
     }
-}
+} 
