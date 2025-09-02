@@ -8,7 +8,7 @@ class Solution {
         lis.add(n);
         Collections.sort(lis);
 
-        int dp[][] = new int[len+2][len+2];
+        int dp[][] = new int[len+1][len+1];
 
         for(int [] ar : dp){
             Arrays.fill(ar , -1);
