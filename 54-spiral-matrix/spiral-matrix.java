@@ -1,42 +1,38 @@
 class Solution {
     public List<Integer> spiralOrder(int[][] matrix) {
-        ArrayList<Integer> ans = new ArrayList<>();
-        int row = matrix.length;
-        int col = matrix[0].length;
-
+        int n = matrix.length;
+        int m = matrix[0].length;
         int top = 0;
-        int bottom = row - 1;
-        int left = 0;
-        int right = col - 1;
-
-        while (top <= bottom && left <= right) {
-            for (int i = left; i <= right; i++) {
+        int right = m-1;
+        int bottom = n-1;
+        int left =0;
+        List<Integer> ans = new ArrayList<>();
+        while(left <= right && top <= bottom ){
+            //left to right by top
+            for(int i = left ;i<= right ; i++ ){
                 ans.add(matrix[top][i]);
             }
             top++;
-            for (int i = top; i <= bottom; i++) {
+            //top to bottom by right
+            for(int i =top ; i<=bottom ; i++){
                 ans.add(matrix[i][right]);
             }
             right--;
-            if (top <= bottom) {
-                for (int i = right; i >= left; i--) {
-                    ans.add(matrix[bottom][i]);
-                }
-                bottom--;
+            if(top > bottom)break;
+            //right to left by bottom
+            for(int i = right ; i >= left ; i--){
+            
+                ans.add(matrix[bottom][i]);
             }
-
-            if (left <= right) {
-                for (int i = bottom; i >= top; i--) {
-                    ans.add(matrix[i][left]);
-                }
-                left++;
+            bottom--;
+              
+            if(left > right)break;
+            //bottom to top by left
+            for(int i = bottom ; i>=top ; i--){
+                ans.add(matrix[i][left]);
             }
+            left++;
         }
         return ans;
     }
 }
-/*
-Time: O(m × n) 
-
-Space: O(1) 
-*/
