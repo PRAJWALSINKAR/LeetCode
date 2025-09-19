@@ -1,26 +1,22 @@
-//my approch
 class Solution {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-    List<List<Integer>> res = new ArrayList<>();
-        
-    helper(0 , 0 , res , new ArrayList<>() , target , candidates);
-    return res;
+       List<List<Integer>> res = new ArrayList<>();
+       helper(0 , candidates , target , new ArrayList<>() ,res);
+       return res;
     }
+    public void helper(int ind , int [] arr , int target , List<Integer> temp ,List<List<Integer>> res  ){
+        if(target == 0){
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+        if(ind == arr.length)return;
 
-
-    public void helper(int index , int currSum ,List<List<Integer>> res, List<Integer> temp , int target, int[] candidate){
-     if(currSum == target){
-        res.add(new ArrayList<>(temp));
-        return ;
-     }
-    if(index == candidate.length || currSum > target)return ;
-       
-    temp.add(candidate[index]);
-    helper(index  , currSum +candidate[index] ,res, temp , target , candidate);
-    
-     temp.remove(temp.size()-1);
-     helper(index + 1 ,currSum  ,res, temp , target , candidate);
-
+        if(target >= arr[ind]){
+            temp.add(arr[ind]);
+            helper(ind , arr , target - arr[ind] , temp , res);
+            temp.remove(temp.size() -1);
+        }
+        helper(ind+1 , arr , target , temp , res);
 
     }
 }
