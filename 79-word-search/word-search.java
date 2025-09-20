@@ -1,41 +1,38 @@
 class Solution {
     public boolean exist(char[][] board, String word) {
-        int m = board.length;//ROW
-        int n = board[0].length;//COL
-         int ind = 0;
-
-         for(int i = 0;i<m;i++){
-               for(int j = 0 ; j<n; j++){
-                   if(board[i][j] == word.charAt(ind)){
-                     if(helper(i , j ,m , n ,  ind , board , word )){
-                    return true;         
-                    }
-                 }
+        int m = board.length;
+        int n = board[0].length;
+         boolean[][] vis = new boolean[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (word.charAt(0) == board[i][j]) {
+                    if(helper(0, i, j, board, word,vis))return true;
+                }
             }
-       }
-       return false;  
+        }
+        return false;
     }
-     public boolean helper(int row , int col ,int m , int n , int ind , char [] [] board , String word){
-        if(ind == word.length()){
+    public boolean helper(int ind, int i, int j, char[][] board, String word , boolean[][]vis) {
+        if (ind == word.length())
             return true;
-        }
-        if(row == m || col == n ||  row<0 || col<0  || board[row][col] == '!' ||  board[row][col] != word.charAt(ind)){
-           return false;
-        }
-        char ch =board[row][col];
-          board[row][col]= '!';
 
-        boolean top = helper(row-1 , col ,m , n ,  ind+1 , board , word );
+        if (i < 0 || j < 0 ||i > board.length - 1 || j > board[0].length - 1)
+            return false;
 
-         boolean bottom = helper(row+1 , col ,m , n ,  ind+1 , board , word );
-         
-         boolean left = helper(row , col-1 ,m , n ,  ind+1 , board , word );
+        if (word.charAt(ind) != board[i][j] || vis[i][j] == true)
+            return false;
+        vis[i][j] = true;
+        //up
+        boolean up = helper(ind + 1, i - 1, j, board, word,vis);
+        //left
+        boolean left = helper(ind + 1, i, j - 1, board, word,vis);
+        // down
+        boolean down = helper(ind + 1, i + 1, j, board, word,vis);
+        //right
+        boolean right = helper(ind + 1, i, j + 1, board, word,vis);
 
-         boolean right = helper(row , col+1 ,m , n ,  ind+1 , board , word );
-
-        board[row][col] = ch;
-         
-         return top || bottom || left || right;
-     }
-    
+        vis[i][j] = false;
+        
+        return up || left || down || right; 
+    }
 }
