@@ -1,61 +1,70 @@
 class Solution {
     public List<List<String>> solveNQueens(int n) {
-        char [][] board = new char[n][n];
-          for(int i=0;i<n;i++){
-            for(int j = 0; j< n ; j++){
-                board[i][j] ='.';
-            }
-          }
+        int[][] mat = new int[n][n];
         List<List<String>> res = new ArrayList<>();
-        helper(0,res , board );
-        return res;
-    }
-    public void helper(int col , List<List<String>> res ,char[][] board) {
-        if(col == board.length){
-         res.add(Construct(board));
-         return ;
-        }
-         for(int row = 0;row<board.length;row++){
-        if(validate(board,row,col)){
-            board[row][col]='Q';
-            helper(col+1, res, board);
-            board[row][col] ='.';
-        }
-      }
-    }
-  
-   public  List<String> Construct(char[][] board){
-       List<String > res = new ArrayList<>();
-        for(int i = 0;i<board.length;i++){
-          String ch = new String(board[i]);
-            res.add( ch);
-           }          
-        
+        int count = n;
+        helper(0, mat, res);
         return res;
     }
 
-
-    public boolean validate(char[][] board, int row , int col){
-    int dulrow = row;
-    int dulcol = col;
-    while(col >=0 && row>=0 ){
-        if(board[row][col]=='Q') return false;
-            col--;
-            row--;
+    public void helper(int j, int[][] mat, List<List<String>> res) {
+        if (j == mat.length) {
+            res.add(construct(mat));
+            return;
         }
-    row = dulrow;
-    col = dulcol;
-    while(col >= 0){
-        if(board[row][col] =='Q')return false;
-        col--;
+        for (int i = 0; i < mat.length; i++) {
+            if (check(i, j, mat)) {
+                mat[i][j] = 1;
+                helper(j + 1, mat, res);
+                mat[i][j] = 0;
+            }
+        }
     }
-    row = dulrow;
-    col = dulcol;
-    while(col>=0 && row < board.length){
-        if(board[row][col] == 'Q') return false; 
-        col--;
-        row++; 
+
+    public List<String> construct(int[][] mat) {
+        List<String> ans = new ArrayList<>();
+        for (int i = 0; i < mat.length; i++) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < mat.length; j++) {
+                if (mat[i][j] == 0) {
+                    sb.append('.');
+                } else {
+                    sb.append('Q');
+                }
+            }
+            ans.add(sb.toString());
+        }
+        return ans;
     }
-       return true;
+
+
+    public boolean check(int i, int j, int[][] mat) {
+       int m = i;
+        int n = j;
+        //left vertical
+        while (i >= 0 && j >= 0) {
+            if (mat[i][j] == 1)
+                return false;
+            i--;
+            j--;
+        }
+        i = m;
+        j = n;
+        //right vertical
+        while (j >= 0 && i < mat.length) {
+            if (mat[i][j] == 1)
+                return false;
+            i++;
+            j--;
+        }
+        i = m;
+        j = n;
+        //up
+        while (j >= 0) {
+            if (mat[i][j] == 1)
+                return false;
+            j--;
+        }
+        return true;
     }
 }
