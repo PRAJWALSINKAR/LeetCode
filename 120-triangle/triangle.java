@@ -1,29 +1,20 @@
 class Solution {
-    public int minimumTotal(List<List<Integer>> arr) {
-        int n = arr.size();
-        int[] prev = new int[n];
-        int []curr = new int [n];
-         
-        prev[0] = arr.get(0).get(0);
+    public int minimumTotal(List<List<Integer>> tri) {
+        int n = tri.size();
+        int dp[][] = new int[n][n];
+        for(int [] arr : dp){
+            Arrays.fill(arr , Integer.MAX_VALUE  - 500);
+        }
+        return helper(0 , 0  , tri , dp);
+    }
+    public int helper(int row , int col , List<List<Integer>> tri , int[][] dp){
+        if(row == tri.size() -1){
+            return tri.get(row).get(col);
+        }
+        if(dp[row][col] < Integer.MAX_VALUE  - 500)return dp[row][col];
+        int d = helper(row+1 ,col ,tri,dp);
+        int dl = helper(row +1 ,col +1 , tri,dp);
 
-        for(int i =1 ; i< n ;i++){
-            for(int j =0 ;j<arr.get(i).size() ; j++ ){
-                int up = Integer.MAX_VALUE;
-                int upLeft = Integer.MAX_VALUE;
-                if(j < arr.get(i).size() -1 ) {
-                    up = prev[j];
-                }
-                if( j> 0 ){
-                    upLeft = prev[j-1];
-                }
-                curr[j] =  Math.min(up , upLeft) + arr.get(i).get(j);
-            }
-            prev = curr.clone();
-        }
-        int ans =Integer.MAX_VALUE;
-        for(int i : prev){
-           ans = Math.min(i , ans);
-        }
-        return ans;
+        return dp[row][col] = tri.get(row).get(col) + Math.min(d , dl);
     }
 }
