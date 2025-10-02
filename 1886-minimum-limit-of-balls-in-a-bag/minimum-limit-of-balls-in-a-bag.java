@@ -1,11 +1,11 @@
 class Solution {
     public int minimumSize(int[] nums, int k) {
         int low= 1;//0
-        int high =0;//7
+        int high =Integer.MAX_VALUE;//7
         int ans = 0;
-        for(int i : nums){
-            high = Math.max(i , high);
-        }
+        // for(int i : nums){
+        //     high = Math.max(i , high);
+        // }
         while(low <= high){
             int mid = low + (high -low) / 2;
             if(isPossible(mid , k , nums)){
