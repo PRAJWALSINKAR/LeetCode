@@ -1,29 +1,31 @@
 class Solution {
-    public int minimumSize(int[] nums, int op) {
-        int low = 1;
-        int high =0;
+    public int minimumSize(int[] nums, int k) {
+        int low= 1;//0
+        int high =0;//7
+        int ans = 0;
         for(int i : nums){
-            high = Math.max(high , i);
+            high = Math.max(i , high);
         }
-        while(low <  high){
-            int mid = low + (high-low) /2;
-            if(isPossible(nums ,op , mid )){
-                high = mid ;
-            }else{
-                low = mid+1;
+        while(low <= high){
+            int mid = low + (high -low) / 2;
+            if(isPossible(mid , k , nums)){
+                high = mid-1;
+                ans = mid;
+            }
+            else{
+                low = mid +1;
             }
         }
-        return low;
+        return ans ;
     }
-    public boolean isPossible(int [] nums , int op , int k){
-        int totalop = 0;
-        for(int val : nums){
-            if(val % k == 0 ){
-                totalop += (val/k)-1;
-                continue;    
-            }
-            totalop += val/k;
+    public boolean isPossible(int val , int k , int[] nums){//8
+        int count =0;
+        for(int i : nums){
+           if(i > val){
+             count += (i-1) / val;
+           }
+           if(count > k)return false;
         }
-        return totalop <= op;
+        return true;
     }
 }
