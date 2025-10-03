@@ -1,49 +1,50 @@
 class Solution {
+    int count = 0;
+
     public int reversePairs(int[] nums) {
-        int [] count = new int[1];
-        mergeSort(nums,0,nums.length-1,count);
-        return count[0];
+        split(0, nums.length - 1, nums);
+        return count;
     }
 
-
-    public void mergeSort(int [] nums,int left,int right,int[]count){
-        if(left>= right)return ;
-        int mid = left + (right-left)/2;
-        mergeSort(nums,left,mid,count);
-        mergeSort(nums,mid+1,right,count);
-        merge(nums,left,mid,right,count);
+    public void split(int left, int right, int[] nums) {
+        int mid = left + (right - left) / 2;
+        if (left >= right)
+            return;
+        split(left, mid, nums);
+        split(mid + 1, right, nums);
+        merge(left, right, mid, nums);
     }
 
-    public void merge(int [] nums ,int left ,int mid,int right,int[] count){
-        for (int i = left, j = mid + 1; i <= mid && j <= right;) {
+    public void merge(int left, int right, int mid, int[] nums) {
+        int i = left, j = mid + 1;
+        while (i <= mid && j <= right) {
             if ((long) nums[i] > 2L * nums[j]) {
-                count[0] += mid - i + 1;
+                count += mid - i + 1;
                 j++;
             } else {
                 i++;
             }
         }
-        int l = left ;
-        int r = mid+1;
-        ArrayList<Integer> list = new ArrayList<>();
-        while(l <= mid && r  <= right){
-            if(nums[l] > nums[r]){
-                list.add(nums[r++]);
-            }
-            else{
-                list.add(nums[l++]);
+        List<Integer> lis = new ArrayList<>();
+        int l = left;
+        int r = mid + 1;
+        while (l <= mid && r <= right) {
+            if (nums[l] < nums[r]) {
+                lis.add(nums[l]);
+                l++;
+            } else {
+                lis.add(nums[r]);
+                r++;
             }
         }
-
         while(l <= mid){
-            list.add(nums[l++]);
+            lis.add(nums[l++]);
         }
-        while(r<=right){
-            list.add(nums[r++]);
+        while(r <= right){
+            lis.add(nums[r++]);
         }
-
-        for(int i = 0;i<list.size();i++){
-            nums[left++] = list.get(i);
+        for(int k =0; k<lis.size() ; k++){
+            nums[left++] = lis.get(k);
         }
     }
 }
