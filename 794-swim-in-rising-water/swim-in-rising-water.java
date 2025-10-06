@@ -1,7 +1,7 @@
 class Solution {
     public int swimInWater(int[][] grid) {
         int low = 0;
-        int high = 10000;
+        int high = 2500;
         int n = grid.length;
         int m = grid[0].length;
 
