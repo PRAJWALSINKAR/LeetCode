@@ -1,44 +1,45 @@
 class Solution {
     public String reverseWords(String s) {
-        int n =s.length();
         char [] arr = s.toCharArray();
+        int n = arr.length;
         reverse(0,n-1,arr);
-        reverseWord(0 , n-1 , arr);
-        return clean(0 ,  arr);
-        
+        reverseWord(n,arr);
+        return cleanSpace( n,arr);
     }
-    public void reverse(int i , int j, char [] arr){
-        while(i < j){
+
+    public void reverse(int i , int j , char[] arr){
+        while(i <j ){
             char temp = arr[i];
             arr[i] = arr[j];
-            arr[j]= temp;
+            arr[j] = temp;
             i++;
             j--;
         }
     }
-    public void reverseWord(int i , int j , char [] arr){
-        while(i < arr.length){
-            while(i <arr.length &&arr[i] ==' ')i++;
-            j=i;
-            while(j< arr.length && arr[j] !=' ')j++;
+    public void reverseWord(int n, char [] arr){
+        int i = 0;
+        int j =0;
+        while(i <n){
+            while(i < n && arr[i] == ' ')i++;
+            j = i;
+            while(j < n && arr[j] !=' ')j++;
             reverse(i , j-1 , arr);
-            i = j;
-        }
+            i=j+1;
+        }   
     }
-    public String clean (int i  , char[] arr){
+    public String cleanSpace(int n , char [] arr){
+        int i = 0;
         int j =0;
         StringBuilder sb = new StringBuilder();
-        while( i < arr.length){
-            while(i<arr.length && arr[i] ==' ')i++;
-            j=i;
-            while(j < arr.length && arr[j] != ' ' )sb.append(arr[j++]);
-            i=j;
-            while(i< arr.length && arr[i] ==' '){
-                if(i<arr.length-1 && arr[i+1] !=' ')sb.append(' ');
-                i++;
+        while(i < n){
+            while(i < n  && arr[i] ==' ')i++;
+            
+            while(i<n && arr[i] != ' ' ){
+                sb.append(arr[i++]);
             }
-
+            if(i < n)sb.append(' ');
         }
-        return sb.toString();
-    } 
+        return sb.toString().trim();
+
+    }
 }
