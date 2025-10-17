@@ -1,15 +1,12 @@
-//my approch
 class Solution {
     public int strStr(String haystack, String needle) {
-        for (int i = 0; i <= haystack.length() - needle.length(); i++) {
-            if (haystack.substring(i, i + needle.length()).equals(needle)) {
-            return i;
+        int n = haystack.length();
+        for (int i = 0; i < n; i++) {
+            for (int j = i+1; j <= n; j++) {
+                if (haystack.substring(i, j).equals(needle))
+                    return i;
             }
         }
         return -1;
     }
 }
-/*
-Time Complexity: O(n × m)
-Space Complexity: O(1) (excluding temporary substring memory)
-*/
