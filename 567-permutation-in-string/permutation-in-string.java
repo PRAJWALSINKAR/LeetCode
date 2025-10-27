@@ -1,16 +1,26 @@
 class Solution {
     public boolean checkInclusion(String s1, String s2) {
-        char[] arr = s1.toCharArray();
-        Arrays.sort(arr);
-        s1 = new String(arr);
         int n = s1.length();
-        for(int i = 0 ; i +n<= s2.length() ; i++){
-            char [] s = s2.substring(i , i+n).toCharArray();
-            Arrays.sort(s);
-            String ss = new String(s);
+        int m = s2.length();
+        if(n >m )return false;
+        int [] arr = new int[26];
+        for(int i = 0 ; i<n ; i++ ){
+            arr[s1.charAt(i) - 'a']++;
+            arr[s2.charAt(i) - 'a']--;
+        }
+        if(check(arr))return true;
 
-            if(ss.equals(s1))return true;
+        for(int i = n ; i < m ; i++ ){
+            arr[s2.charAt(i)-'a']--;
+            arr[s2.charAt(i-n)-'a']++;
+            if(check(arr))return true;
         }
         return false;
+    }
+    public boolean check(int [] arr){
+        for(int i : arr){
+            if(i != 0)return false;
+        }
+        return true;
     }
 }
