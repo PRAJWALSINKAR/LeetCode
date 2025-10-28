@@ -1,36 +1,23 @@
 class Solution {
     public int countValidSelections(int[] nums) {
-        int n = nums.length;
-        int ans = 0;
+        int sum = 0;
+        int count = 0;
+        int curr = 0;
 
-        for(int start = 0; start < n; start++){
-            if(nums[start] == 0){
-                if(check(nums, start, 1)) ans++;  
-                if(check(nums, start, -1)) ans++; 
+        for (int i : nums)
+            sum += i;
+
+        for (int i = 0; i < nums.length; i++) {
+            curr += nums[i];
+
+            if (nums[i] == 0) {
+                if (2 * curr == sum) {
+                    count += 2;
+                } else if (Math.abs(sum - (2 * curr)) == 1) {
+                    count++;
+                }
             }
         }
-        return ans;
-    }
-
-    private boolean check(int[] nums, int start, int dir){
-        int n = nums.length;
-        int[] arr = nums.clone();
-        int curr = start;
-        int d = dir;
-
-        while(curr >= 0 && curr < n){
-            if(arr[curr] == 0){
-                curr += d;
-            }else{
-                arr[curr]--;
-                d = -d;
-                curr += d;
-            }
-        }
-
-        for(int x : arr){
-            if(x != 0) return false;
-        }
-        return true;
+        return count;
     }
 }
