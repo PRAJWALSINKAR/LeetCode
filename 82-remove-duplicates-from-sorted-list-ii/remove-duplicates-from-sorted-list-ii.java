@@ -13,7 +13,7 @@ class Solution {
 
         //for starting repeated modes
         while (head != null && head.next != null && head.val == head.next.val) {
-            while (head != null && head.next != null && head.val == head.next.val) {
+            while (head.next != null && head.val == head.next.val) {
                 head = head.next;
             }
             head = head.next;
@@ -23,10 +23,7 @@ class Solution {
             return head;
         ListNode curr = head.next;
         while (curr != null) {
-            if(curr.next == null){
-                prev.next = curr;
-                return head;
-            }
+            //
             if (curr != null && curr.next != null && curr.val == curr.next.val) { // if same values
                 while (curr != null && curr.next != null && curr.val == curr.next.val) {
                     curr = curr.next;
@@ -37,12 +34,11 @@ class Solution {
                     return head;
                 }
 
-                if (curr != null && curr.next != null && curr.val != curr.next.val) { // 1 2 2 3 3 4
+                if (curr != null && curr.next != null && curr.val != curr.next.val) {
                     prev.next = curr;
                     prev = curr;
-                    curr = curr.next; // 
+                    curr = curr.next;
                 }
-
             } else {
                 prev.next = curr;
                 prev = curr;
