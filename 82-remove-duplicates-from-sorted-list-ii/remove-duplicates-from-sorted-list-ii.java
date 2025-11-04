@@ -10,22 +10,45 @@
  */
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
-        ListNode dummy = new ListNode(-101);
-        dummy.next = head;
-        ListNode prev = dummy;
-        ListNode curr= head;
 
-        while(curr != null ){
-            while(curr.next != null && curr.val == curr.next.val)curr = curr.next;
-
-            if(prev.next == curr){
-                prev= prev.next;
+        //for starting repeated modes
+        while (head != null && head.next != null && head.val == head.next.val) {
+            while (head != null && head.next != null && head.val == head.next.val) {
+                head = head.next;
             }
-            else{
-                prev.next = curr.next;
-            }
-             curr = curr.next;
+            head = head.next;
         }
-        return dummy.next;
+        ListNode prev = head;
+        if (head == null || head.next == null)
+            return head;
+        ListNode curr = head.next;
+        while (curr != null) {
+            if(curr.next == null){
+                prev.next = curr;
+                return head;
+            }
+            if (curr != null && curr.next != null && curr.val == curr.next.val) { // if same values
+                while (curr != null && curr.next != null && curr.val == curr.next.val) {
+                    curr = curr.next;
+                }
+                curr = curr.next;
+                if (curr == null){
+                    prev.next = null;
+                    return head;
+                }
+
+                if (curr != null && curr.next != null && curr.val != curr.next.val) { // 1 2 2 3 3 4
+                    prev.next = curr;
+                    prev = curr;
+                    curr = curr.next; // 
+                }
+
+            } else {
+                prev.next = curr;
+                prev = curr;
+                curr = curr.next;
+            }
+        }
+        return head;
     }
 }
