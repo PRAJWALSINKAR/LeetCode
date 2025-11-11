@@ -17,10 +17,10 @@ class Solution {
             even[i] = count; // store 0 freq
             odd[i] = l - count; // store 1 freq
         }
-        return helper(0 , even , odd , m , n , dp); // call our dp function
+        return helper(0 , m , n , dp); // call our dp function
     }
 
-    public int helper(int ind , int[] even , int [] odd , int m , int n , int[][][] dp ){
+    public int helper(int ind ,  int m , int n , int[][][] dp ){
         if(ind >= odd.length)return 0;
 
         int x = m - even[ind]; // remaning even 
@@ -29,10 +29,10 @@ class Solution {
         int pick = Integer.MIN_VALUE;
 
         if(x >=0 && y >= 0 ){
-            pick = 1 + helper(ind + 1 , even , odd , x , y , dp); // pass new  :- even odd remaning
+            pick = 1 + helper(ind + 1 , x , y , dp); // pass new  :- even odd remaning
          }
 
-        int nonPick = helper(ind + 1 , even , odd , m , n , dp); // pass old odd even
+        int nonPick = helper(ind + 1 ,  m , n , dp); // pass old odd even
 
         return dp[ind][m][n] = Math.max(pick , nonPick);
     }
