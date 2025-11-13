@@ -1,20 +1,24 @@
 class Solution {
     public List<List<Integer>> combinationSum3(int k, int n) {
-        List<List<Integer>> res = new ArrayList<>();
-        helper(1 , 0 , 0 , new ArrayList<>(),  k , n , res);
-        return res; 
+        List<List<Integer>> ans = new ArrayList<>();
+        helper(0 , new ArrayList<>() , k , n, ans);
+        return ans;
     }
-    public void helper(int val , int idx ,int sum ,List<Integer> temp ,  int k , int n ,  List<List<Integer>> res ){
-        if(idx == k && sum == n){
-            res.add(new ArrayList<>(temp));
-            return ;
+    public void helper(int ind , List<Integer> lis , int len , int target, List<List<Integer>> ans){
+
+        if(len == lis.size()){
+            if (target == 0)
+            ans.add(new ArrayList<>(lis));
+            return;
         }
-        if(val == 10 || sum > n || idx > n ) return;
 
-        temp.add(val);
-        helper(val+1 , idx+1,sum+val,temp,k,n,res);
+        if(lis.size() >= len || target <= 0 )return;
 
-        temp.remove(temp.size() - 1);
-        helper(val+1, idx , sum , temp , k , n,res);
+        for(int i = ind+1 ; i < 10 ; i++){
+            if(target - i < 0)break;
+            lis.add(i);
+            helper(i , lis , len , target - i , ans);
+            lis.remove(lis.size() - 1);
+        }
     }
 }
