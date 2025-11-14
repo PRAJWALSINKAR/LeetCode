@@ -1,31 +1,28 @@
 class Solution {
     public List<List<String>> partition(String s) {
-        List<List<String>> res = new ArrayList<>();
-        List<String> temp = new ArrayList<>();
-        helper(0, s, res, temp);
-        return res;
+        List<List<String>> ans = new ArrayList<>();
+        helper(0 , new ArrayList<>() , s , ans);
+        return ans; 
     }
-
-    public void helper(int idx , String s , List<List<String>> res , List<String> temp){
-        if(idx == s.length()){
-            res.add(new ArrayList<>(temp));
+    public void helper(int ind , List<String> lis , String s , List<List<String>> ans){
+        if(ind == s.length()){
+            ans.add(new ArrayList<>(lis));
             return;
         }
-        
-        for(int i = idx ; i< s.length() ; i++){
-        if(isPalindrom(s , idx , i)){
-            temp.add(s.substring(idx ,i+1 ));
-            helper(i+1 , s , res , temp);  //imp
-            temp.remove(temp.size() -1 );
-        }
-    }
-}
 
-    public boolean isPalindrom(String s, int start, int end) {
-        while (start < end) {
-            if (s.charAt(start++) != s.charAt(end--)) {
-                return false;
+        for(int i = ind + 1 ; i <= s.length() ; i++){
+            if(isPalidrome(ind , i-1 , s)){
+                lis.add(s.substring(ind , i));
+                helper(i , lis , s , ans);
+                lis.remove(lis.size() - 1);
             }
+        } 
+    }
+    public boolean isPalidrome(int low , int high , String s){
+        while(low <= high){
+            if(s.charAt(low) != s.charAt(high) )return false;
+            low++;
+            high--;
         }
         return true;
     }
