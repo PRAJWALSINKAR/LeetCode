@@ -1,70 +1,62 @@
 class Solution {
     public List<List<String>> solveNQueens(int n) {
-        int[][] mat = new int[n][n];
-        List<List<String>> res = new ArrayList<>();
-        int count = n;
-        helper(0, mat, res);
-        return res;
-    }
-
-    public void helper(int j, int[][] mat, List<List<String>> res) {
-        if (j == mat.length) {
-            res.add(construct(mat));
-            return;
-        }
-        for (int i = 0; i < mat.length; i++) {
-            if (check(i, j, mat)) {
-                mat[i][j] = 1;
-                helper(j + 1, mat, res);
-                mat[i][j] = 0;
-            }
-        }
-    }
-
-    public List<String> construct(int[][] mat) {
-        List<String> ans = new ArrayList<>();
-        for (int i = 0; i < mat.length; i++) {
-            StringBuilder sb = new StringBuilder();
-            for (int j = 0; j < mat.length; j++) {
-                if (mat[i][j] == 0) {
-                    sb.append('.');
-                } else {
-                    sb.append('Q');
-                }
-            }
-            ans.add(sb.toString());
-        }
+        List<List<String>> ans = new ArrayList<>();
+        int [][] arr = new int[n][n];
+        helper(0 , arr , ans);
         return ans;
     }
-
-
-    public boolean check(int i, int j, int[][] mat) {
-       int m = i;
-        int n = j;
-        //left vertical
-        while (i >= 0 && j >= 0) {
-            if (mat[i][j] == 1)
-                return false;
-            i--;
-            j--;
+    public void helper(int row , int [][] arr , List<List<String>> ans ){
+        if(row == arr.length){
+            ans.add(new ArrayList<>(change(arr)));
+            return;
         }
-        i = m;
-        j = n;
-        //right vertical
-        while (j >= 0 && i < mat.length) {
-            if (mat[i][j] == 1)
-                return false;
-            i++;
-            j--;
+        for(int col = 0 ; col < arr.length ; col++){
+            if(check(row , col , arr)){
+                arr[row][col] = 1;
+                helper(row + 1 , arr , ans);
+                arr[row][col] = 0;
+            }
         }
-        i = m;
-        j = n;
-        //up
-        while (j >= 0) {
-            if (mat[i][j] == 1)
-                return false;
-            j--;
+    }
+    public boolean check(int row , int col , int [][] arr){
+        int drow = row;
+        int dcol = col;
+        //left
+        while(row >= 0){
+            if(arr[row][col] == 1)return false;
+            row--;
+        }
+        //up-left
+        row = drow;
+        while(row >= 0  && col >=0){
+            if(arr[row][col] == 1 )return false;
+            row--;
+            col--;
+        }
+        row = drow;
+        col = dcol;
+        //up-right
+        while(row >= 0 && col < arr.length){
+            if(arr[row][col] == 1 )return false;
+            row--;
+            col++;
         }
         return true;
+    }
+    public List<String> change(int[][] arr){
+        List<String> lis = new ArrayList<>();
+        int n = arr.length;
+        for(int i = 0 ; i <n ; i++){
+            String s = "";
+            for(int j = 0 ; j< n ; j++){
+                if(arr[i][j] == 0){
+                    s =s + ".";
+                }else{
+                    s= s + 'Q';
+                }
+            }
+            lis.add(s);
+        }
+        return lis;
     }
 }
