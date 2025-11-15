@@ -1,52 +1,57 @@
 class Solution {
     public List<List<String>> solveNQueens(int n) {
         List<List<String>> ans = new ArrayList<>();
-        boolean [] RL = new boolean[n*2+1];
-        boolean [] LR = new boolean[n*2+1];
-        boolean CL [] = new boolean[n+1]; 
-        int [][] arr = new int[n][n];
-        helper(0 , ans , arr ,  RL , LR , CL , n );
+        char[][] queen = new char[n][n];
+
+        boolean[] leftRight = new boolean[2 * n + 1];
+        boolean[] rightLeft = new boolean[2 * n + 1];
+        boolean[] column = new boolean[n + 1];
+        List<String> temp = new ArrayList<>();
+
+        canPlace(0, leftRight, rightLeft, column, queen, ans);
         return ans;
     }
-    public void helper(int row , List<List<String>> ans , int [][] arr ,  boolean [] RL , boolean [] LR, boolean [] CL , int n  ){
-        if(row == n){
-            ans.add(new ArrayList<>(change(arr)));
+
+    private void canPlace(int row, boolean[] leftRight, boolean[] rightLeft, boolean[] column, char[][] queen,
+            List<List<String>> ans) {
+        int n = queen.length;
+        if (row == n) {
+            ans.add(new ArrayList<>(helper(queen)));
             return;
         }
-        for(int col = 0 ; col < arr.length ; col++){
-            if(check(row , col ,  RL , LR , CL , n )){
-                LR[row + col] = true;
-                RL[n+ (col - row)] = true;
-                CL[col] = true;
-                arr[row][col] = 1;
-                helper(row + 1 ,  ans , arr , RL , LR , CL , n);
 
-                arr[row][col] =0;
-                LR[row + col] = false;
-                RL[n+ (col - row)] = false;
-                CL[col] = false;
+        for (int col = 0; col < queen.length; col++) {
+            if (!(leftRight[n + (col - row)] || rightLeft[col + row] || column[col])) {
 
+                leftRight[n + (col - row)] = true;
+                rightLeft[col + row] = true;
+                column[col] = true;
+                queen[row][col] = 'Q';
+
+                canPlace(row + 1, leftRight, rightLeft, column, queen, ans);
+                queen[row][col] = '.';
+                leftRight[n + (col - row)] = false;
+                rightLeft[col + row] = false;
+                column[col] = false;
             }
         }
     }
-    public boolean check(int row , int col , boolean [] RL , boolean [] LR, boolean [] CL , int n  ){
-        if(LR[row + col] == true || RL[n+ (col - row)] == true || CL[col] == true)return false;
-        return true;
-    }
-    public List<String> change(int[][] arr){
-        List<String> lis = new ArrayList<>();
-        int n = arr.length;
-        for(int i = 0 ; i <n ; i++){
-            String s = "";
-            for(int j = 0 ; j< n ; j++){
-                if(arr[i][j] == 0){
-                    s =s + ".";
-                }else{
-                    s= s + 'Q';
+
+    public List<String> helper(char[][] queen) {
+        List<String> temp = new ArrayList<>();
+        int n = queen.length;
+        for (int i = 0; i < n; i++) {
+            String str = "";
+            for (int j = 0; j < n; j++) {
+                if (queen[i][j] == 'Q') {
+                    str = str + "Q";
+                } else {
+                    str = str + ".";
                 }
             }
-            lis.add(s);
+            temp.add(str);
         }
-        return lis;
+        return temp;
+
     }
 }
