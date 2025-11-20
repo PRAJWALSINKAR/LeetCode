@@ -1,15 +1,19 @@
 class Solution {
     public int combinationSum4(int[] nums, int target) {
-        int[] dp = new int[target + 1];
-        dp[0] = 1;
+       Integer dp [][] = new Integer[nums.length][target + 1];
+      return  helper(0 , nums , target , dp);
+    }
+    
+    public int helper(int ind , int [] nums , int t, Integer [][] dp){
+        if(t == 0)return 1;
 
-        for (int t = 1; t <= target; t++) {
-            for (int num : nums) {
-                if (t - num >= 0) {
-                    dp[t] += dp[t - num];
-                }
-            }
+        if(t < 0)return 0;
+        if(dp[ind][t] != null)return dp[ind][t];
+        int c = 0;
+        for(int i = 0 ; i < nums.length ; i++){
+            c += helper(i , nums , t - nums[i], dp);
         }
-        return dp[target];
+
+        return dp[ind][t] = c;
     }
 }
