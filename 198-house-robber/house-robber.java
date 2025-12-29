@@ -1,19 +1,17 @@
 class Solution {
     public int rob(int[] nums) {
-        Integer [] dp = new Integer[nums.length];
-       return helper(0 ,dp  , nums);
-    }
-    public int helper(int ind ,Integer[] dp ,  int [] arr){
-        int n = arr.length;
-        if(ind >= n)return 0;
+       
+        int n  = nums.length;
+        if(n== 1)return nums[0];
+        int prev = Math.max(nums[0] ,  nums[1]);
+         int prev2 = nums[0];
 
-        if(dp[ind] != null)return dp[ind];
-
-        int take = arr[ind] + helper(ind + 2 ,dp ,  arr);
-
-        int notTake = helper(ind + 1 ,dp ,  arr);
-
-        return dp[ind] = Math.max(take , notTake); 
+        for(int i = 2  ; i < n ; i++){
+              int max = Math.max(prev , nums[i] + prev2);
+              prev2 = prev;
+              prev = max;
+        }
+       return prev;
 
     }
 }
