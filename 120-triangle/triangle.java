@@ -1,20 +1,21 @@
 class Solution {
-    public int minimumTotal(List<List<Integer>> tri) {
-        int n = tri.size();
-        int dp[][] = new int[n][n];
-        for(int [] arr : dp){
-            Arrays.fill(arr , Integer.MAX_VALUE  - 500);
-        }
-        return helper(0 , 0  , tri , dp);
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int n = triangle.size();
+        Integer [][] dp = new Integer[n][triangle.get(n-1).size()];
+        return helper(0 ,0,triangle , dp);
     }
-    public int helper(int row , int col , List<List<Integer>> tri , int[][] dp){
-        if(row == tri.size() -1){
-            return tri.get(row).get(col);
-        }
-        if(dp[row][col] < Integer.MAX_VALUE  - 500)return dp[row][col];
-        int d = helper(row+1 ,col ,tri,dp);
-        int dl = helper(row +1 ,col +1 , tri,dp);
+    public int helper(int row , int col , List<List<Integer>> triangle , Integer[][] dp){
 
-        return dp[row][col] = tri.get(row).get(col) + Math.min(d , dl);
+        if(col > triangle.get(row).size() -1 )return Integer.MAX_VALUE-500; 
+        if(row == triangle.size()-1)return triangle.get(row).get(col);
+
+        if(dp[row][col] != null)return dp[row][col];
+
+
+        int down = triangle.get(row).get(col) + helper(row+1 ,col,triangle, dp); 
+        
+        int right = triangle.get(row).get(col) + helper(row+1 ,col + 1,triangle , dp);
+
+        return dp[row][col] = Math.min(down , right);
     }
 }
