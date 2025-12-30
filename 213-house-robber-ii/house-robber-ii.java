@@ -1,25 +1,25 @@
 class Solution {
     public int rob(int[] nums) {
         int n = nums.length;
-        if(n==1 )return nums[0];
-        int[] dp1 = new int[n];
-        int[] dp2 = new int[n];
-        Arrays.fill(dp1 , -1);
-        Arrays.fill(dp2 , -1);
-        return Math.max(helper(n-1 , 1 , nums,dp1),helper(n-2 , 0 , nums,dp2));
+        if(n==1)return nums[0];
+        Integer [] dp = new Integer[n];
+        int first = helper(0 , n-1 , nums , dp);
+        dp = new Integer[n];
+        int sec = helper(1 , n , nums , dp);
+
+        return Math.max(first , sec);
     }
-  public int helper(int n , int start , int [] nums , int [] dp){
-    if(n < start)return 0;
 
-    if(dp[n] != -1)return dp[n];
+    public int helper(int ind , int end , int [] nums , Integer [] dp){
+        if(ind >= end)return 0;
 
-    int take = helper(n-2 , start , nums , dp) + nums[n];
+        if(dp[ind] != null)return dp[ind];
 
-    int nonTake = helper(n-1 , start , nums , dp);
+        int take = nums[ind] + helper(ind+2 , end , nums , dp);
 
-    dp[n] = Math.max(take , nonTake);
+        int notTake =  helper(ind +1 , end , nums , dp);
+        
+        return dp[ind] = Math.max(take , notTake);
 
-    return dp[n] ; 
-  } 
-
+    }
 }
