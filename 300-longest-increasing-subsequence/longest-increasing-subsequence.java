@@ -1,25 +1,19 @@
 class Solution {
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
-        int [][] dp = new int[n][n+1];
-        for(int [] ar : dp){
-            Arrays.fill(ar , -1);
-        }
-        return helper(0 , -1 , dp , nums);
+        Integer [][] dp = new Integer[n][n+1];
+        return helper(0 ,-1 , nums , dp);
     }
-    public static int helper(int ind , int prev , int [][]dp , int [] arr){
+
+    public int helper(int ind , int prev ,int [] arr , Integer[][] dp){
         if(ind == arr.length)return 0;
-
-        if(dp[ind][prev+1] != -1)return dp[ind][prev+1];
-
-        int notTake = helper(ind+1 , prev , dp , arr);
+        if(dp[ind][prev+1] != null)return dp[ind][prev+1];
         int take = 0;
-        if(prev ==-1 || arr[ind] > arr[prev]){
-            take = 1 + helper(ind+1 , ind , dp , arr);
+        if( prev == -1 || arr[prev] < arr[ind]){
+            take = 1 + helper(ind +1 , ind, arr , dp);
         }
+        int nottake = helper(ind+1 , prev, arr , dp);
 
-        int len = Math.max(take , notTake);
-
-        return dp[ind][prev+1] = len;
+        return dp[ind][prev+1] = Math.max(take , nottake);
     }
 }
