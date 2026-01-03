@@ -10,60 +10,54 @@
  */
 class Solution {
     public ListNode sortList(ListNode head) {
-        if (head == null || head.next == null) {
-            return head;
-        }
-
-        // Split the list into halves
-        ListNode mid = getMid(head);
-        ListNode left = sortList(head);
-        ListNode right = sortList(mid);
-
-        // Merge sorted halves
-        return merge(left, right);
-    }
-
-    private ListNode getMid(ListNode head) {
+        if(head == null)return null;
+        if(head.next == null)return head;
         ListNode slow = head;
-        ListNode fast = head;
-        ListNode prev = null;
-
-        while (fast != null && fast.next != null) {
-            prev = slow;
+        ListNode fast  =head;
+        while(fast.next != null && fast.next.next != null){
             slow = slow.next;
             fast = fast.next.next;
         }
-
-        // Split the list into two parts
-        if (prev != null) {
-            prev.next = null;
-        }
-
-        return slow;
-    }
-
-    private ListNode merge(ListNode l1, ListNode l2) {
+        ListNode nn = slow.next; 
+        slow.next = null;
+        ListNode first= sortList(head);
+        
+        ListNode sec =sortList(nn);
+        
+        //merge
         ListNode dummy = new ListNode(0);
-        ListNode tail = dummy;
-
-        while (l1 != null && l2 != null) {
-            if (l1.val < l2.val) {
-                tail.next = l1;
-                l1 = l1.next;
-            } else {
-                tail.next = l2;
-                l2 = l2.next;
+        ListNode curr = dummy;
+        ListNode currf = first;
+        ListNode currs = sec;
+        while(currf != null && currs != null){
+            if(currf.val < currs.val){
+                ListNode temp = currf;
+                currf = currf.next;
+                temp.next = null;
+                curr.next = temp;
+                curr = curr.next;
+            }else{
+                ListNode temp = currs;
+                currs = currs.next;
+                temp.next = null;
+                curr.next = temp;
+                curr = curr.next;
             }
-            tail = tail.next;
         }
-
-        if (l1 != null) {
-            tail.next = l1;
+        while(currf != null){
+            ListNode temp = currf;
+            currf = currf.next;
+            temp.next = null;
+            curr.next = temp;
+            curr = curr.next;
         }
-        if (l2 != null) {
-            tail.next = l2;
+        while(currs != null){
+            ListNode temp = currs;
+            currs = currs.next;
+            temp.next = null;
+            curr.next = temp;
+            curr = curr.next;
         }
-
-        return dummy.next;
+    return dummy.next;
     }
 }
