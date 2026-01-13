@@ -1,50 +1,53 @@
 class Solution {
     int count = 0;
-
     public int reversePairs(int[] nums) {
-        split(0, nums.length - 1, nums);
+        helper(0, nums.length - 1, nums);
         return count;
     }
-
-    public void split(int left, int right, int[] nums) {
-        int mid = left + (right - left) / 2;
-        if (left >= right)
+    public void helper(int start, int end, int[] nums) {
+        if (start >= end)
             return;
-        split(left, mid, nums);
-        split(mid + 1, right, nums);
-        merge(left, right, mid, nums);
+
+        int mid = (start + end) / 2;
+
+        helper(start, mid , nums);
+        helper(mid+1 , end, nums);
+
+        int left = start;
+        int right = mid+1;
+        while(right <= end && left <= mid){
+            if(nums[left] > (long)nums[right] * 2){
+                right++;
+            }else{
+                count += right-mid-1;
+                left++;
+            }
+        }
+        while(left++ <= mid) count += right-mid-1;
+        merge(start, end , mid+1 , nums);
     }
 
-    public void merge(int left, int right, int mid, int[] nums) {
-        int i = left, j = mid + 1;
-        while (i <= mid && j <= right) {
-            if ((long) nums[i] > 2L * nums[j]) {
-                count += mid - i + 1;
-                j++;
-            } else {
-                i++;
-            }
-        }
+    public void merge(int start1  , int end ,int start2 , int [] nums ){
+        int sta = start1;
+        int mid = start2;
         List<Integer> lis = new ArrayList<>();
-        int l = left;
-        int r = mid + 1;
-        while (l <= mid && r <= right) {
-            if (nums[l] < nums[r]) {
-                lis.add(nums[l]);
-                l++;
-            } else {
-                lis.add(nums[r]);
-                r++;
+        while(start1 < mid && start2 <= end  ){
+            if(nums[start1] < nums[start2]){
+                lis.add(nums[start1]);
+                start1++;
+            }else{
+                lis.add(nums[start2]);
+                start2++;
             }
         }
-        while(l <= mid){
-            lis.add(nums[l++]);
-        }
-        while(r <= right){
-            lis.add(nums[r++]);
-        }
-        for(int k =0; k<lis.size() ; k++){
-            nums[left++] = lis.get(k);
+        while(start1 < mid)lis.add(nums[start1++]);
+        while(start2 <= end  )lis.add(nums[start2++]);
+
+        int curr = 0;
+
+        for(int start = sta ; start <= end ; start++){
+           nums[start] = lis.get(curr);
+           curr++;   
         }
     }
 }
