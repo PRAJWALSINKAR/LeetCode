@@ -1,32 +1,23 @@
 class Solution {
     public void sortColors(int[] nums) {
-        int count0 = 0;
-        int count1 = 0;
-        int count2 = 0;
-        for(int x : nums){
-            if( x == 0){
-                count0++;
-            }
-            if(x== 1){
-             count1++;
-        }
-        count2++;
-        }
-        for(int i = 0;i< nums.length;i++){
-            if(count0 != 0){
+        int i = 0 ;
+        int j = nums.length - 1;
+        int k = 0;
+        if(j == 0 || j== -1)return;
+        
+
+        while(k <= j){
+            if(nums[k] == 0){
+                nums[k] = nums[i];
                 nums[i] =0;
-                count0--;
+                i++;
+            }else if(nums[k] == 2){
+                nums[k] = nums[j];
+                nums[j] = 2;
+                j--;
+                continue;
             }
-            else if(count1 != 0){
-             nums[i] = 1;
-             count1--;
-            }else{
-                nums[i] = 2;
-                count2--;
-            }
+            k++;
         }
     }
 }
-
-// time complixity = O(N)
-// Space complixity = O(1)
