@@ -1,22 +1,18 @@
 class Solution {
     public int majorityElement(int[] nums) {
-        int k = nums[0];
-        int count = 1;
-        for (int i = 1; i < nums.length; i++) {
-            if (nums[i] == k) {
-                count++;
-            } else {
+        int count = 0;
+        int max = -1;
+
+        for(int i : nums){
+            if(count != 0 && max != i){
                 count--;
-                if (count == 0) {
-                    k = nums[i];
-                    count = 1;
-                }
+                continue;
             }
+            if(count == 0){
+                max = i;
+            }
+           count++;
         }
-        return k;
+        return max;
     }
 }
-/* 
-time complixity -> O(N) -> iterate  one
-space complixity -> O(1) --> use contants only
-*/
