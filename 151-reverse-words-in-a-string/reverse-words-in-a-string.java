@@ -1,45 +1,53 @@
 class Solution {
-    public String reverseWords(String s) {
-        char [] arr = s.toCharArray();
-        int n = arr.length;
-        reverse(0,n-1,arr);
-        reverseWord(n,arr);
-        return cleanSpace( n,arr);
+    public String reverseWords(String sb) {
+        char[] s = sb.toCharArray();
+        reverse(0, s.length - 1, s);
+        reverseWord(s);
+        return clean(s);
+
     }
 
-    public void reverse(int i , int j , char[] arr){
-        while(i <j ){
-            char temp = arr[i];
+    public void reverse(int i, int j, char[] arr) {
+        while (i < j) {
+            char ch = arr[i];
             arr[i] = arr[j];
-            arr[j] = temp;
+            arr[j] = ch;
             i++;
             j--;
         }
     }
-    public void reverseWord(int n, char [] arr){
+
+    public void reverseWord(char[] arr) {
+        int n = arr.length;
         int i = 0;
-        int j =0;
-        while(i <n){
-            while(i < n && arr[i] == ' ')i++;
-            j = i;
-            while(j < n && arr[j] !=' ')j++;
-            reverse(i , j-1 , arr);
-            i=j+1;
-        }   
-    }
-    public String cleanSpace(int n , char [] arr){
-        int i = 0;
-        int j =0;
-        StringBuilder sb = new StringBuilder();
-        while(i < n){
-            while(i < n  && arr[i] ==' ')i++;
-            
-            while(i<n && arr[i] != ' ' ){
-                sb.append(arr[i++]);
+        int j = 0;
+
+        while (j < n) {
+            while (j < n && arr[j] == ' ') {
+                j++;
             }
-            if(i < n)sb.append(' ');
+            i = j;
+            while (j < n && arr[j] != ' ') {
+                j++;
+            }
+            reverse(i, j-1, arr);
+        }
+    }
+    public String clean(char [] arr ){
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        int j = 0;
+        int n = arr.length;
+        while( j< n){
+            while(j < n && arr[j] == ' '){
+                j++;
+            }
+            while(j < n && arr[j] != ' '){
+                sb.append(arr[j]);
+                j++;
+            }
+            if(j < n-1)sb.append(' ');
         }
         return sb.toString().trim();
-
     }
 }
